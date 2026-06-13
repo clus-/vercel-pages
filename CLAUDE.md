@@ -45,12 +45,16 @@ Wenn ich eine neue App mitbringe (als Dateien oder Beschreibung):
 
 ```js
 bewertung: {
-  sterne: 1-5,          // 1=schlecht, 3=solide, 5=ausgezeichnet
   kurzfazit: "...",     // 1 Satz
   details: "...",       // 3-5 Sätze, keine Sonderzeichen/Anführungszeichen im String
-  quellen: "..."        // Kommagetrennt
+  noten: [              // Quellen-Noten, kicker-Skala 1-6 (1=ausgezeichnet, 6=ungenuegend)
+    { quelle: "kicker", note: 3.5 },
+    { quelle: "Sportschau", note: 2.0 },
+  ],
+  quellen: "..."        // Textquellen ohne Note, kommagetrennt
 }
 // null wenn noch keine Bewertung vorhanden
+// sterne werden automatisch aus dem Noten-Durchschnitt berechnet (nicht mehr manuell setzen!)
 ```
 
 ## Wichtige Hinweise

@@ -2,6 +2,11 @@
 // MATCHES.JS – Hier pflegst du alle Spieldaten
 // Neue Spiele einfach unten anfügen, Schiedsrichter + Bewertung
 // ergänzen sobald bekannt. Dann: git add . && git commit -m "Spieltag X" && git push
+//
+// noten-Format:
+//   { quelle: "kicker", note: 3.5 }   -> kicker-Skala 1-6 (1=ausgezeichnet, 6=ungenuegend)
+//   { quelle: "Sportschau", note: 3.0 } -> gleiche Skala, wenn Quelle vergleichbare Note gibt
+// sterne werden automatisch aus dem Noten-Durchschnitt berechnet (muss nicht mehr manuell gesetzt werden)
 // ============================================================
 
 export const MATCHES = [
@@ -14,9 +19,11 @@ export const MATCHES = [
     sr_land: "Brasilien",
     sr_konfed: "CONMEBOL",
     bewertung: {
-      sterne: 2,
       kurzfazit: "Umstrittene Leistung - im Mittelpunkt statt im Hintergrund",
       details: "3 Rote Karten (WM-Rekord im Eroeffnungsspiel): Sithole (50. Min, berechtigt), Zwane (84. Min, nach VAR - strittig), Montes (90+2. Min, berechtigt). Die Rote Karte gegen Zwane wegen angeblicher Taetlichkeit loeste Kritik aus. TV-Experte Patrick Ittrich (MagentaTV): \"Das bleibt leider haengen. Jetzt reden alle ueber den Schiedsrichter, und das nach einem WM-Eroeffnungsspiel.\" Letztmals so viele Platzverweise gab es 2006 (Schlacht von Nuernberg).",
+      noten: [
+        { quelle: "kicker", note: 4.5 },
+      ],
       quellen: "Tagesspiegel, 20min, stimme.de, t-online.de"
     }
   },
@@ -29,9 +36,11 @@ export const MATCHES = [
     sr_land: "Aegypten",
     sr_konfed: "CAF",
     bewertung: {
-      sterne: 4,
       kurzfazit: "Solide WM-Premiere - kluge Abseitsentscheidung per VAR",
       details: "WM-Debuet des Aegypters. Hob einen vermeintlichen Soucek-Treffer (78. Min) korrekt wegen Abseits auf. Leitete eine lebendige Partie ohne groessere Kontroversen - unauffaellig im positiven Sinne.",
+      noten: [
+        { quelle: "kicker", note: 2.5 },
+      ],
       quellen: "Sportschau, audimax.de"
     }
   },
@@ -44,9 +53,11 @@ export const MATCHES = [
     sr_land: "Argentinien",
     sr_konfed: "CONMEBOL",
     bewertung: {
-      sterne: 3,
       kurzfazit: "Unauffaellige Leistung bei ausgeglichenem Spiel",
       details: "Der Argentinier leitete das Spiel ohne groessere Kontroversen. Kanada traf spaet zum 1:1-Ausgleich durch Larin (78. Min). Keine umstrittenen Entscheidungen gemeldet.",
+      noten: [
+        { quelle: "kicker", note: 3.0 },
+      ],
       quellen: "fussballdaten.de, t-online.de"
     }
   },
@@ -59,9 +70,11 @@ export const MATCHES = [
     sr_land: "Niederlande",
     sr_konfed: "UEFA",
     bewertung: {
-      sterne: 4,
       kurzfazit: "Gelungener Einsatz - erste VAR-Korrektur der WM souveraen gehandhabt",
       details: "Makkelie nutzte erstmals bei dieser WM die neue VAR-Befugnis zur Spielerverwechslung: Nahm Gelbe Karte von US-Kapitaen Ream zurueck und zeigte stattdessen Almiron wegen Schwalbe (53. Min). Allgemein als korrekt bewertet. Leitete ein klares Spiel ohne weitere Kontroversen professionell.",
+      noten: [
+        { quelle: "kicker", note: 2.0 },
+      ],
       quellen: "ZDF, ORF Sport, sportschau.de, SN.at"
     }
   },

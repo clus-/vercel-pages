@@ -12,6 +12,25 @@ const GRUPPE_COLORS = {
   I: "#00bcd4", J: "#8bc34a", K: "#ff5722", L: "#607d8b",
 };
 
+// kicker scale: 1 (best) – 6 (worst). Color thresholds:
+function noteColor(note) {
+  if (note <= 2.0) return "#4CAF50";
+  if (note <= 3.0) return "#8bc34a";
+  if (note <= 3.5) return "#FFD700";
+  if (note <= 4.5) return "#FF9800";
+  return "#f44336";
+}
+
+// Convert avg kicker note (1–6) to 1–5 stars (inverted)
+function noteToSterne(avg) {
+  return Math.max(1, Math.min(5, Math.round(6 - avg)));
+}
+
+function avgNote(noten) {
+  if (!noten || noten.length === 0) return null;
+  return noten.reduce((s, n) => s + n.note, 0) / noten.length;
+}
+
 function Sterne({ n, max = 5 }) {
   return (
     <span>
@@ -19,6 +38,32 @@ function Sterne({ n, max = 5 }) {
         <span key={i} style={{ color: i < n ? "#FFD700" : "#3a3a5a", fontSize: 14 }}>&#9733;</span>
       ))}
     </span>
+  );
+}
+
+function NoteBadge({ quelle, note }) {
+  const color = noteColor(note);
+  return (
+    <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 2 }}>
+      <div style={{
+        background: color,
+        color: "#000",
+        fontWeight: 800,
+        fontSize: 18,
+        width: 48,
+        height: 48,
+        borderRadius: 8,
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        lineHeight: 1,
+      }}>
+        {note.toFixed(1).replace(".", ",")}
+      </div>
+      <div style={{ color: "#666", fontSize: 10, fontWeight: 600, textTransform: "uppercase", letterSpacing: 0.5 }}>
+        {quelle}
+      </div>
+    </div>
   );
 }
 
@@ -35,6 +80,10 @@ function KonfedBadge({ konfed }) {
 
 function MatchCard({ match, expanded, onToggle }) {
   const gc = GRUPPE_COLORS[match.gruppe] || "#888";
+  const avg = match.bewertung ? avgNote(match.bewertung.noten) : null;
+  const sterne = avg !== null ? noteToSterne(avg) : null;
+  const hasRating = match.bewertung && match.bewertung.noten && match.bewertung.noten.length > 0;
+
   return (
     <div style={{
       background: "#16162e",
@@ -83,9 +132,27 @@ function MatchCard({ match, expanded, onToggle }) {
           }
         </div>
 
-        {match.bewertung && (
+        {hasRating && avg !== null && (
+          <div style={{ flexShrink: 0, display: "flex", alignItems: "center", gap: 6 }}>
+            <span style={{
+              background: noteColor(avg),
+              color: "#000",
+              fontWeight: 800,
+              fontSize: 13,
+              padding: "3px 8px",
+              borderRadius: 5,
+              minWidth: 34,
+              textAlign: "center",
+            }}>
+              {avg.toFixed(1).replace(".", ",")}
+            </span>
+            <Sterne n={sterne} />
+            <span style={{ color: "#444", fontSize: 11 }}>{expanded ? "▲" : "▼"}</span>
+          </div>
+        )}
+        {match.bewertung && !hasRating && (
           <div style={{ flexShrink: 0, display: "flex", alignItems: "center", gap: 4 }}>
-            <Sterne n={match.bewertung.sterne} />
+            <span style={{ color: "#555", fontSize: 11, fontStyle: "italic" }}>bewertet</span>
             <span style={{ color: "#444", fontSize: 11 }}>{expanded ? "▲" : "▼"}</span>
           </div>
         )}
@@ -93,18 +160,55 @@ function MatchCard({ match, expanded, onToggle }) {
 
       {expanded && match.bewertung && (
         <div style={{ borderTop: "1px solid #22224a", padding: "12px 14px 14px 36px", background: "#10102a" }}>
-          <div style={{ marginBottom: 6, display: "flex", alignItems: "center", gap: 8, flexWrap: "wrap" }}>
-            <span style={{ color: "#FFD700", fontWeight: 700, fontSize: 13 }}>{match.schiedsrichter}</span>
-            <span style={{ color: "#555", fontSize: 12 }}>({match.sr_land})</span>
-            <Sterne n={match.bewertung.sterne} />
+          <div style={{ marginBottom: 10, display: "flex", alignItems: "flex-start", gap: 12, flexWrap: "wrap" }}>
+            <div style={{ flex: 1, minWidth: 200 }}>
+              <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 6, flexWrap: "wrap" }}>
+                <span style={{ color: "#FFD700", fontWeight: 700, fontSize: 13 }}>{match.schiedsrichter}</span>
+                <span style={{ color: "#555", fontSize: 12 }}>({match.sr_land})</span>
+                {sterne !== null && <Sterne n={sterne} />}
+              </div>
+              <div style={{ color: "#c0c8e8", fontSize: 13, fontStyle: "italic", marginBottom: 8 }}>
+                {match.bewertung.kurzfazit}
+              </div>
+              <div style={{ color: "#8888aa", fontSize: 12, lineHeight: 1.65, marginBottom: 8 }}>
+                {match.bewertung.details}
+              </div>
+              <div style={{ color: "#333", fontSize: 11 }}>Quellen: {match.bewertung.quellen}</div>
+            </div>
+
+            {match.bewertung.noten && match.bewertung.noten.length > 0 && (
+              <div style={{ display: "flex", flexDirection: "column", alignItems: "flex-end", gap: 8 }}>
+                <div style={{ color: "#444", fontSize: 10, textTransform: "uppercase", letterSpacing: 1, marginBottom: 2 }}>
+                  Bewertungen (Skala 1–6)
+                </div>
+                <div style={{ display: "flex", gap: 10, flexWrap: "wrap", justifyContent: "flex-end" }}>
+                  {match.bewertung.noten.map(n => (
+                    <NoteBadge key={n.quelle} quelle={n.quelle} note={n.note} />
+                  ))}
+                </div>
+                {match.bewertung.noten.length > 1 && (
+                  <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 2, marginTop: 4 }}>
+                    <div style={{
+                      background: noteColor(avg),
+                      color: "#000",
+                      fontWeight: 800,
+                      fontSize: 15,
+                      width: 48,
+                      height: 48,
+                      borderRadius: 8,
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      border: "2px solid rgba(255,255,255,0.2)",
+                    }}>
+                      {avg.toFixed(1).replace(".", ",")}
+                    </div>
+                    <div style={{ color: "#555", fontSize: 10, textTransform: "uppercase", letterSpacing: 0.5 }}>Schnitt</div>
+                  </div>
+                )}
+              </div>
+            )}
           </div>
-          <div style={{ color: "#c0c8e8", fontSize: 13, fontStyle: "italic", marginBottom: 8 }}>
-            {match.bewertung.kurzfazit}
-          </div>
-          <div style={{ color: "#8888aa", fontSize: 12, lineHeight: 1.65, marginBottom: 8 }}>
-            {match.bewertung.details}
-          </div>
-          <div style={{ color: "#333", fontSize: 11 }}>Quellen: {match.bewertung.quellen}</div>
         </div>
       )}
     </div>
@@ -189,7 +293,7 @@ export default function App() {
       </div>
 
       <div style={{ maxWidth: 900, margin: "0 auto", padding: "0 20px 4px", color: "#2a2a3a", fontSize: 11 }}>
-        Spiele mit &#9660; enthalten eine SR-Bewertung.
+        Spiele mit &#9660; enthalten eine SR-Bewertung. Noten nach kicker-Skala (1 = ausgezeichnet, 6 = ungenuegend).
       </div>
 
       {/* Match list */}
@@ -201,7 +305,7 @@ export default function App() {
       </div>
 
       <div style={{ maxWidth: 900, margin: "0 auto", padding: "16px 20px", color: "#2a2a3a", fontSize: 10, borderTop: "1px solid #16162e", marginTop: 8 }}>
-        Stand: 13.06.2026 | SR-Bewertungen aus deutschen und internationalen Medien (MagentaTV, ZDF, Sportschau, Tagesspiegel, ORF)
+        Stand: 13.06.2026 | SR-Bewertungen aus deutschen und internationalen Medien (kicker, MagentaTV, ZDF, Sportschau, Tagesspiegel, ORF)
       </div>
     </div>
   );
