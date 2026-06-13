@@ -348,7 +348,7 @@ function RefGameDetail({ match }) {
   );
 }
 
-function RefCard({ ref: r }) {
+function RefCard({ schiri: r }) {
   const [expanded, setExpanded] = useState(false);
   const [expandedGame, setExpandedGame] = useState(null);
 
@@ -504,7 +504,7 @@ function RefsPage() {
       <div style={{ maxWidth: 900, margin: "0 auto", padding: "0 20px" }}>
         {sorted.length === 0
           ? <div style={{ color: "#333", textAlign: "center", padding: 40, fontSize: 14 }}>Keine Schiedsrichter gefunden.</div>
-          : sorted.map(r => <RefCard key={r.name} ref={r} />)
+          : sorted.map(r => <RefCard key={r.name} schiri={r} />)
         }
       </div>
     </>
