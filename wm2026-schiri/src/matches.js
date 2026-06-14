@@ -113,7 +113,12 @@ export const MATCHES = [
     schiedsrichter: "Mustapha Ghorbal",
     sr_land: "Algerien",
     sr_konfed: "CAF",
-    bewertung: null
+    bewertung: {
+      kurzfazit: "Souveraene WM-Premiere - unauffaellige Leistung bei Schottlands historischem Sieg",
+      details: "Ghorbal leitete Schottlands erste WM-Partie seit 1998 ruhig und ohne Kontroversen. McGinn traf in der 28. Minute per Deflektivschuss zur einzigen Entscheidung. Haiti blieb harmlos; keine strittigen Entscheidungen gemeldet. Zweite WM-Teilnahme des Algeriers nach 2022.",
+      noten: [],
+      quellen: "Sky Sports, ESPN, Athlon Sports"
+    }
   },
   {
     id: 8, datum: "14.06.2026", uhrzeit: "06:00", gruppe: "D",
@@ -122,11 +127,16 @@ export const MATCHES = [
     schiedsrichter: "Jesus Valenzuela",
     sr_land: "Venezuela",
     sr_konfed: "CONMEBOL",
-    bewertung: null
+    bewertung: {
+      kurzfazit: "Diskrete Leistung - einzige Gelbe Karte bleibt das Einzige an Aufregung",
+      details: "Valenzuela leitete ein einseitiges Spiel mit nur einer Gelben Karte (Akgun/Tuerkei) sehr unaufgeregt. Australien siegte verdient durch Irankunda (27., juengster WM-Torschuetze Australiens) und Metcalfe (75.), obwohl die Tuerkei 72% Ballbesitz und 30 Schuesse hatte. Valenzuelas zweite WM nach Katar 2022 - erneut ohne grossen Streit.",
+      noten: [],
+      quellen: "Sportsnet Pittsburgh, Sky Sports, beIN Sports"
+    }
   },
   // --- Ab hier: SR noch nicht bekanntgegeben / Spiele noch nicht gespielt ---
-  { id: 9,  datum: "14.06.2026", uhrzeit: "19:00", gruppe: "E", heim: "Deutschland",  gast: "Curacao",         ergebnis: null, abgeschlossen: false, schiedsrichter: null, sr_land: null, sr_konfed: null, bewertung: null },
-  { id: 10, datum: "14.06.2026", uhrzeit: "22:00", gruppe: "F", heim: "Niederlande",  gast: "Japan",           ergebnis: null, abgeschlossen: false, schiedsrichter: null, sr_land: null, sr_konfed: null, bewertung: null },
+  { id: 9,  datum: "14.06.2026", uhrzeit: "19:00", gruppe: "E", heim: "Deutschland",  gast: "Curacao",         ergebnis: null, abgeschlossen: false, schiedsrichter: "Jalal Jayed",    sr_land: "Marokko",    sr_konfed: "CAF",      bewertung: null },
+  { id: 10, datum: "14.06.2026", uhrzeit: "22:00", gruppe: "F", heim: "Niederlande",  gast: "Japan",           ergebnis: null, abgeschlossen: false, schiedsrichter: "Ismail Elfath",  sr_land: "USA",        sr_konfed: "CONCACAF", bewertung: null },
   { id: 11, datum: "15.06.2026", uhrzeit: "01:00", gruppe: "E", heim: "Cote d'Ivoire",gast: "Ecuador",         ergebnis: null, abgeschlossen: false, schiedsrichter: null, sr_land: null, sr_konfed: null, bewertung: null },
   { id: 12, datum: "15.06.2026", uhrzeit: "04:00", gruppe: "F", heim: "Schweden",     gast: "Tunesien",        ergebnis: null, abgeschlossen: false, schiedsrichter: null, sr_land: null, sr_konfed: null, bewertung: null },
   { id: 13, datum: "15.06.2026", uhrzeit: "18:00", gruppe: "H", heim: "Spanien",      gast: "Kap Verde",       ergebnis: null, abgeschlossen: false, schiedsrichter: null, sr_land: null, sr_konfed: null, bewertung: null },
