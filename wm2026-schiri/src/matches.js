@@ -78,11 +78,53 @@ export const MATCHES = [
       quellen: "ZDF, ORF Sport, sportschau.de, SN.at"
     }
   },
+  {
+    id: 5, datum: "13.06.2026", uhrzeit: "21:00", gruppe: "B",
+    heim: "Katar", gast: "Schweiz", ergebnis: "1:1",
+    abgeschlossen: true,
+    schiedsrichter: "Hector Said Martinez",
+    sr_land: "Honduras",
+    sr_konfed: "CONCACAF",
+    bewertung: {
+      kurzfazit: "VAR-Kontroverse - fehlende Transparenz bei Elfmeter-Ueberpruefung sorgt weltweit fuer Aerger",
+      details: "Said Martinez vergab Elfmeter nach Foul von Torhueter Abunada an Freuler - VAR ueberprueft auf Abseits, zeigte aber weder Grafiken noch halbautomatische Abseitslinie. Embolo traf per Strafstoss zur Fuehrung. Gary Neville wuetend: FIFA verhalte sich wie eine Diktatur. Ex-Schiedsrichter Keith Hackett: Technologie hat versagt. Erst drei Stunden spaeter erklaerte FIFA den technischen Fehler. Katar rettete in der 90+5 durch Khoukhi den Ausgleich.",
+      noten: [],
+      quellen: "Sportbible, GiveMeSport, STARNEWS, Eurosport, SRF Sport"
+    }
+  },
+  {
+    id: 6, datum: "14.06.2026", uhrzeit: "00:00", gruppe: "C",
+    heim: "Brasilien", gast: "Marokko", ergebnis: "1:1",
+    abgeschlossen: true,
+    schiedsrichter: "Slavko Vincic",
+    sr_land: "Slowenien",
+    sr_konfed: "UEFA",
+    bewertung: {
+      kurzfazit: "Solide Leistung bei attraktivem Remis - Blutabbruch bei Fabinho einziger Streitpunkt",
+      details: "Vincic ordnete in der 63. Minute den verletzten Fabinho nach Blutungsverletzung vom Platz - der Mittelfeldspieler protestierte kurz. Marokko durch Saibari (21.) in Fuehrung, Vinicius Jr. glich in der 32. Minute fuer Brasilien aus. Insgesamt ruhiges Spiel ohne groessere Kontroversen. Vincic als einer der erfahrensten UEFA-Schiedsrichter souveraen.",
+      noten: [],
+      quellen: "ESPN, Mirror, CBS Sports, Morocco World News"
+    }
+  },
+  {
+    id: 7, datum: "14.06.2026", uhrzeit: "03:00", gruppe: "C",
+    heim: "Haiti", gast: "Schottland", ergebnis: "0:1",
+    abgeschlossen: true,
+    schiedsrichter: "Mustapha Ghorbal",
+    sr_land: "Algerien",
+    sr_konfed: "CAF",
+    bewertung: null
+  },
+  {
+    id: 8, datum: "14.06.2026", uhrzeit: "06:00", gruppe: "D",
+    heim: "Australien", gast: "Tuerkei", ergebnis: "2:0",
+    abgeschlossen: true,
+    schiedsrichter: "Jesus Valenzuela",
+    sr_land: "Venezuela",
+    sr_konfed: "CONMEBOL",
+    bewertung: null
+  },
   // --- Ab hier: SR noch nicht bekanntgegeben / Spiele noch nicht gespielt ---
-  { id: 5,  datum: "13.06.2026", uhrzeit: "21:00", gruppe: "B", heim: "Katar",        gast: "Schweiz",         ergebnis: null, abgeschlossen: false, schiedsrichter: null, sr_land: null, sr_konfed: null, bewertung: null },
-  { id: 6,  datum: "14.06.2026", uhrzeit: "00:00", gruppe: "C", heim: "Brasilien",    gast: "Marokko",         ergebnis: null, abgeschlossen: false, schiedsrichter: null, sr_land: null, sr_konfed: null, bewertung: null },
-  { id: 7,  datum: "14.06.2026", uhrzeit: "03:00", gruppe: "C", heim: "Haiti",        gast: "Schottland",      ergebnis: null, abgeschlossen: false, schiedsrichter: null, sr_land: null, sr_konfed: null, bewertung: null },
-  { id: 8,  datum: "14.06.2026", uhrzeit: "06:00", gruppe: "D", heim: "Australien",   gast: "Tuerkei",         ergebnis: null, abgeschlossen: false, schiedsrichter: null, sr_land: null, sr_konfed: null, bewertung: null },
   { id: 9,  datum: "14.06.2026", uhrzeit: "19:00", gruppe: "E", heim: "Deutschland",  gast: "Curacao",         ergebnis: null, abgeschlossen: false, schiedsrichter: null, sr_land: null, sr_konfed: null, bewertung: null },
   { id: 10, datum: "14.06.2026", uhrzeit: "22:00", gruppe: "F", heim: "Niederlande",  gast: "Japan",           ergebnis: null, abgeschlossen: false, schiedsrichter: null, sr_land: null, sr_konfed: null, bewertung: null },
   { id: 11, datum: "15.06.2026", uhrzeit: "01:00", gruppe: "E", heim: "Cote d'Ivoire",gast: "Ecuador",         ergebnis: null, abgeschlossen: false, schiedsrichter: null, sr_land: null, sr_konfed: null, bewertung: null },
