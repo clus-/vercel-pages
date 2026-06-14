@@ -113,7 +113,12 @@ export const MATCHES = [
     schiedsrichter: "Mustapha Ghorbal",
     sr_land: "Algerien",
     sr_konfed: "CAF",
-    bewertung: null
+    bewertung: {
+      kurzfazit: "Zwei strittige Nicht-Entscheidungen zugunsten Schottlands trueben das Bild",
+      details: "Ghorbal, bereits bei der WM 2022 dabei, hatte das Spiel grundsaetzlich unter Kontrolle, liess aber zwei potenziell spielentscheidende Szenen durchgehen: In der 79. Min traf Bellegardes Schuss den Arm von Hanley im Strafraum - kein Elfmeter, kein VAR-Eingriff. Kurz vor Schluss verursachte Ralston ein hartes Foul an Casimir (Knieverletzung), ohne jede Karte. Beide Entscheidungen wurden kritisiert. Positiv: Foulgrenze insgesamt konsistent gesetzt.",
+      noten: [],
+      quellen: "fanzword.com, Law5-theref.blogspot.com, Sports Mole, Outlook India"
+    }
   },
   {
     id: 8, datum: "14.06.2026", uhrzeit: "06:00", gruppe: "D",
@@ -122,7 +127,12 @@ export const MATCHES = [
     schiedsrichter: "Jesus Valenzuela",
     sr_land: "Venezuela",
     sr_konfed: "CONMEBOL",
-    bewertung: null
+    bewertung: {
+      kurzfazit: "Klares Spiel, klare Leistung - Valenzuela blieb voellig unbemerkt",
+      details: "Der Venezolaner, IFFHS-Bester CONMEBOL-SR 2021 und bereits bei der WM 2022 dabei (u.a. Frankreich-Polen im Achtelfinale), leitete ein eindeutiges Spiel ohne jede Kontroverse. Irankunda (27.) und Metcalfe (75.) trafen fuer Australien. Keine strittigen Szenen, keine Karten-Debatten - eine fehlerfreie Partie unter idealen Bedingungen.",
+      noten: [],
+      quellen: "ESPN, VAVEL, Athlon Sports"
+    }
   },
   // --- Ab hier: SR noch nicht bekanntgegeben / Spiele noch nicht gespielt ---
   { id: 9,  datum: "14.06.2026", uhrzeit: "19:00", gruppe: "E", heim: "Deutschland",  gast: "Curacao",         ergebnis: null, abgeschlossen: false, schiedsrichter: null, sr_land: null, sr_konfed: null, bewertung: null },
