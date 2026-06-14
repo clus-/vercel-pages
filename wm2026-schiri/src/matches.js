@@ -20,9 +20,9 @@ export const MATCHES = [
     sr_konfed: "CONMEBOL",
     bewertung: {
       kurzfazit: "Umstrittene Leistung - im Mittelpunkt statt im Hintergrund",
-      details: "3 Rote Karten (WM-Rekord im Eroeffnungsspiel): Sithole (50. Min, berechtigt), Zwane (84. Min, nach VAR - strittig), Montes (90+2. Min, berechtigt). Die Rote Karte gegen Zwane wegen angeblicher Taetlichkeit loeste Kritik aus. TV-Experte Patrick Ittrich (MagentaTV): \"Das bleibt leider haengen. Jetzt reden alle ueber den Schiedsrichter, und das nach einem WM-Eroeffnungsspiel.\" Letztmals so viele Platzverweise gab es 2006 (Schlacht von Nuernberg).",
+      details: "3 Rote Karten (WM-Rekord im Eroeffnungsspiel): Sithole (50. Min, berechtigt), Zwane (84. Min, nach VAR - strittig), Montes (90+2. Min, berechtigt). Lag in einer an sich leicht zu leitenden Partie mit dem ersten Platzverweis richtig. Die Rote Karte gegen Zwane wegen angeblicher Taetlichkeit loeste Kritik aus. TV-Experte Patrick Ittrich (MagentaTV): Das bleibt leider haengen. Letztmals so viele Platzverweise gab es 2006 (Schlacht von Nuernberg).",
       noten: [
-        { quelle: "kicker", note: 4.5 },
+        { quelle: "kicker", note: 4.0 },
       ],
       quellen: "Tagesspiegel, 20min, stimme.de, t-online.de"
     }
@@ -56,7 +56,7 @@ export const MATCHES = [
       kurzfazit: "Unauffaellige Leistung bei ausgeglichenem Spiel",
       details: "Der Argentinier leitete das Spiel ohne groessere Kontroversen. Kanada traf spaet zum 1:1-Ausgleich durch Larin (78. Min). Keine umstrittenen Entscheidungen gemeldet.",
       noten: [
-        { quelle: "kicker", note: 3.0 },
+        { quelle: "kicker", note: 2.0 },
       ],
       quellen: "fussballdaten.de, t-online.de"
     }
@@ -70,10 +70,10 @@ export const MATCHES = [
     sr_land: "Niederlande",
     sr_konfed: "UEFA",
     bewertung: {
-      kurzfazit: "Gelungener Einsatz - erste VAR-Korrektur der WM souveraen gehandhabt",
-      details: "Makkelie nutzte erstmals bei dieser WM die neue VAR-Befugnis zur Spielerverwechslung: Nahm Gelbe Karte von US-Kapitaen Ream zurueck und zeigte stattdessen Almiron wegen Schwalbe (53. Min). Allgemein als korrekt bewertet. Leitete ein klares Spiel ohne weitere Kontroversen professionell.",
+      kurzfazit: "Grundsaetzlich im Griff - VAR-Spielerverwechslung sorgte fuer Ungereimtheit",
+      details: "Hatte die Partie bis auf Kleinigkeiten grundsaetzlich im Griff. Sorgte allerdings fuer eine groessere Ungereimtheit, als er Ream fuer ein vermeintliches Foul an Almiron Gelb zeigte, dieses aber nach VAR-Eingriff wegen Spielerverwechslung in Gelb fuer Almiron wegen Schwalbe umwandelte. Relevanz fuers Spiel hatte dies aber nicht.",
       noten: [
-        { quelle: "kicker", note: 2.0 },
+        { quelle: "kicker", note: 4.0 },
       ],
       quellen: "ZDF, ORF Sport, sportschau.de, SN.at"
     }
@@ -89,7 +89,9 @@ export const MATCHES = [
     bewertung: {
       kurzfazit: "VAR-Kontroverse - fehlende Transparenz bei Elfmeter-Ueberpruefung sorgt weltweit fuer Aerger",
       details: "Said Martinez vergab Elfmeter nach Foul von Torhueter Abunada an Freuler - VAR ueberprueft auf Abseits, zeigte aber weder Grafiken noch halbautomatische Abseitslinie. Embolo traf per Strafstoss zur Fuehrung. Gary Neville wuetend: FIFA verhalte sich wie eine Diktatur. Ex-Schiedsrichter Keith Hackett: Technologie hat versagt. Erst drei Stunden spaeter erklaerte FIFA den technischen Fehler. Katar rettete in der 90+5 durch Khoukhi den Ausgleich.",
-      noten: [],
+      noten: [
+        { quelle: "kicker", note: 3.5 },
+      ],
       quellen: "Sportbible, GiveMeSport, STARNEWS, Eurosport, SRF Sport"
     }
   },
@@ -102,9 +104,11 @@ export const MATCHES = [
     sr_land: "Slowenien",
     sr_konfed: "UEFA",
     bewertung: {
-      kurzfazit: "Solide Leistung bei attraktivem Remis - Blutabbruch bei Fabinho einziger Streitpunkt",
-      details: "Vincic ordnete in der 63. Minute den verletzten Fabinho nach Blutungsverletzung vom Platz - der Mittelfeldspieler protestierte kurz. Marokko durch Saibari (21.) in Fuehrung, Vinicius Jr. glich in der 32. Minute fuer Brasilien aus. Insgesamt ruhiges Spiel ohne groessere Kontroversen. Vincic als einer der erfahrensten UEFA-Schiedsrichter souveraen.",
-      noten: [],
+      kurzfazit: "Solide Leistung - Nachspielzeit zu lang, Verwarnungsluecke bei Guimaraes",
+      details: "Zehn Minuten Nachspielzeit waren zu lange. Haette Bruno Guimaraes fuer das Stempeln gegen Hakimi (49.) verwarnen muessen. Marokko durch Saibari (21.) in Fuehrung, Vinicius Jr. glich in der 32. Minute fuer Brasilien aus. Vincic als erfahrener UEFA-Schiedsrichter ansonsten souveraen.",
+      noten: [
+        { quelle: "kicker", note: 3.0 },
+      ],
       quellen: "ESPN, Mirror, CBS Sports, Morocco World News"
     }
   },
@@ -117,9 +121,11 @@ export const MATCHES = [
     sr_land: "Algerien",
     sr_konfed: "CAF",
     bewertung: {
-      kurzfazit: "Ruhige Partie, Schiedsrichter ohne Fehlgriff",
-      details: "Der algerische SR leitete eine ueberschaubare Partie, in der sich Schottland muehsam mit 1:0 durchsetzte. Ghorbal traf keine auffaellig umstrittenen Entscheidungen. Neben Amin Omar einer der afrikanischen Stammkraefte bei dieser WM.",
-      noten: [],
+      kurzfazit: "Nicht immer souveraen - fehlende Verwarnungen und Einheitlichkeit",
+      details: "Nicht immer souveraen: Experience haette fuer sein Foul gegen Gannon-Doak zwingend verwarnt werden muessen (49.), Gelb statt Rot war bei McLeans Einsteigen gegen Casimir gerade noch vertretbar (90.+5). Bei zwei potenziellen Strafstoss-Szenen (Hanley gegen Isidor, 22.; Jean Jacques gegen McTominay, 71.) mit einheitlicher Linie.",
+      noten: [
+        { quelle: "kicker", note: 3.0 },
+      ],
       quellen: "Sportschau, athlonsports.com"
     }
   },
@@ -132,9 +138,11 @@ export const MATCHES = [
     sr_land: "Venezuela",
     sr_konfed: "CONMEBOL",
     bewertung: {
-      kurzfazit: "Klares Spiel, Valenzuela mit sicherer Hand",
-      details: "Der Venezolaner leitete ein eindeutiges Spiel, das Australien mit 2:0 fuer sich entschied. Valenzuela ist ein erfahrener CONMEBOL-Referee und hatte bei diesem Spiel wenig grosse Entscheidungen zu treffen. Keine bemerkenswerten Kontroversen.",
-      noten: [],
+      kurzfazit: "Angenehm unaufgeregt - kleinere Fehler in der Zweikampfbeurteilung",
+      details: "Leitete die Partie angenehm unaufgeregt und unauffaellig. Mit kleineren Fehlern in der Zweikampfbeurteilung, hatte aber insgesamt alles im Griff. Korrekt, bei Bos' unabsichtlichem Handspiel infolge des Schusses von Yildiz aus kurzer Distanz nicht auf Strafstoss zu entscheiden (76.).",
+      noten: [
+        { quelle: "kicker", note: 2.0 },
+      ],
       quellen: "Yahoo Sports, FourFourTwo, beinsports.com"
     }
   },
