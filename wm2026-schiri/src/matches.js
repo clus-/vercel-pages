@@ -176,8 +176,36 @@ export const MATCHES = [
       quellen: "Outlook India, NBC Sports, bolavip.com"
     }
   },
-  { id: 11, datum: "15.06.2026", uhrzeit: "01:00", gruppe: "E", heim: "Cote d'Ivoire", gast: "Ecuador",    ergebnis: null, abgeschlossen: false, schiedsrichter: null,                sr_land: null,          sr_konfed: null,       bewertung: null },
-  { id: 12, datum: "15.06.2026", uhrzeit: "04:00", gruppe: "F", heim: "Schweden",       gast: "Tunesien",   ergebnis: null, abgeschlossen: false, schiedsrichter: "Yael Falcon Perez", sr_land: "Argentinien", sr_konfed: "CONMEBOL", bewertung: null },
+  {
+    id: 11,
+    datum: "15.06.2026", uhrzeit: "01:00", gruppe: "E",
+    heim: "Cote d'Ivoire", gast: "Ecuador", ergebnis: "1:0",
+    abgeschlossen: true,
+    schiedsrichter: "Francois Letexier",
+    sr_land: "Frankreich",
+    sr_konfed: "UEFA",
+    bewertung: {
+      kurzfazit: "Neue Behandlungsregel erstmals eingesetzt - Ecuador-Protest nach Sieg der Elfenbeinkueste",
+      details: "Letexier sprang kurzfristig fuer den verletzten Michael Oliver ein. Setzte erstmals bei dieser WM die neue Regel um, wonach behandelte Spieler das Feld fuer mindestens eine Minute verlassen muessen (Caicedo, 18. Min). Ecuador verlor trotz viermaligem Pfosten-/Lattentreffern mit 0:1 - Amad erzielte in der 90. Minute den Siegtreffer. Ecuadors Spieler protestierten lautstark gegen mehrere Entscheidungen.",
+      noten: [],
+      quellen: "t-online.de, fussball-nachschlagewerk.de, weekend.at"
+    }
+  },
+  {
+    id: 12,
+    datum: "15.06.2026", uhrzeit: "04:00", gruppe: "F",
+    heim: "Schweden", gast: "Tunesien", ergebnis: "5:1",
+    abgeschlossen: true,
+    schiedsrichter: "Yael Falcon Perez",
+    sr_land: "Argentinien",
+    sr_konfed: "CONMEBOL",
+    bewertung: {
+      kurzfazit: "Klare Angelegenheit - Chip-im-Ball-Technologie bei Isak-Tor entscheidend",
+      details: "Falcon Perez nutzte erstmals bei dieser WM den Chip im Ball, um eine kleine Beruehrung Isaks auf einer Hereingabe nachzuweisen und eine Abseits-Entscheidung zu kippen - Tor gueltig (30. Min). Schweden dominierte mit einem Galaauftritt: Ayari (7.), Isak (30.), Gyoekeres (59.), Svanberg sowie Ayari erneut (90.+6) - Tunesien traf durch Rekik (43.).",
+      noten: [],
+      quellen: "srf.ch, sportschau.de, zdf.de, fussball-nachschlagewerk.de"
+    }
+  },
   { id: 13, datum: "15.06.2026", uhrzeit: "18:00", gruppe: "H", heim: "Spanien",        gast: "Kap Verde",  ergebnis: null, abgeschlossen: false, schiedsrichter: null,                sr_land: null,          sr_konfed: null,       bewertung: null },
   { id: 14, datum: "15.06.2026", uhrzeit: "21:00", gruppe: "G", heim: "Belgien",        gast: "Aegypten",   ergebnis: null, abgeschlossen: false, schiedsrichter: null,                sr_land: null,          sr_konfed: null,       bewertung: null },
   { id: 15, datum: "16.06.2026", uhrzeit: "00:00", gruppe: "H", heim: "Saudi-Arabien",  gast: "Uruguay",    ergebnis: null, abgeschlossen: false, schiedsrichter: null,                sr_land: null,          sr_konfed: null,       bewertung: null },
