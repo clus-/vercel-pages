@@ -7,13 +7,17 @@ die über Vercel mit fixer URL öffentlich erreichbar sind.
 
 ```
 /
-├── wm2026-schiri/      # WM 2026 Schiedsrichter-Übersicht
+├── wm2026-schiri/         # WM 2026 Schiedsrichter-Übersicht
 │   ├── src/
-│   │   ├── matches.js  # <-- Einzige Datei die regelmäßig aktualisiert wird
+│   │   ├── matches.js     # <-- Einzige Datei die regelmäßig aktualisiert wird
 │   │   └── App.jsx
 │   └── ...
-├── weiteres-projekt/   # Zukünftige Seiten gleich hier daneben
-└── CLAUDE.md           # Diese Datei
+├── sailing-terminology/   # Seemannssprache DE/EN-Glossar (Flashcards, Quiz, Nachschlagen)
+│   ├── src/
+│   │   └── App.jsx        # Begriffe liegen im TERMS-Array, Lernstand via localStorage
+│   └── ...
+├── weiteres-projekt/      # Zukünftige Seiten gleich hier daneben
+└── CLAUDE.md              # Diese Datei
 ```
 
 ## Deine Aufgaben
