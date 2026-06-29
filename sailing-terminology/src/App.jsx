@@ -1,4 +1,4 @@
-import { useState, useEffect, useMemo, useCallback } from "react";
+import { useState, useEffect, useMemo, useRef, useCallback } from "react";
 
 /* ---------------------------------------------------------
    Daten: zweisprachiges Glossar (DE / EN)
@@ -164,6 +164,9 @@ function pickDistractors(term, pool, count) {
   return chosen;
 }
 
+// Muss zur .flashcard-Transition-Dauer in CSS passen (dort als ${FLIP_MS / 1000}s eingesetzt)
+const FLIP_MS = 450;
+
 /* ---------------------------------------------------------
    Compass Rose — Signatur-Element
 --------------------------------------------------------- */
@@ -214,6 +217,8 @@ function FlashcardMode({ pool, known, toggleKnown }) {
   const [idx, setIdx] = useState(0);
   const [flipped, setFlipped] = useState(false);
   const [showKnownOnly, setShowKnownOnly] = useState("all"); // all | unknown | known
+  const [transitioning, setTransitioning] = useState(false);
+  const flipBackTimer = useRef(null);
 
   const filteredOrder = useMemo(() => {
     if (showKnownOnly === "all") return order;
@@ -223,9 +228,13 @@ function FlashcardMode({ pool, known, toggleKnown }) {
   }, [order, showKnownOnly, known]);
 
   useEffect(() => {
+    clearTimeout(flipBackTimer.current);
+    setTransitioning(false);
     setIdx(0);
     setFlipped(false);
   }, [showKnownOnly, pool]);
+
+  useEffect(() => () => clearTimeout(flipBackTimer.current), []);
 
   const current = useMemo(() => {
     const id = filteredOrder[idx % Math.max(filteredOrder.length, 1)];
@@ -233,11 +242,25 @@ function FlashcardMode({ pool, known, toggleKnown }) {
   }, [filteredOrder, idx, pool]);
 
   const next = () => {
-    setFlipped(false);
-    setIdx((i) => i + 1);
+    if (transitioning) return;
+    if (flipped) {
+      // Erst zurueckdrehen, DANACH den naechsten Begriff einsetzen - sonst
+      // sieht man die EN-Antwort des naechsten Begriffs schon waehrend der
+      // Dreh-Animation durchscheinen, bevor sie auf DE zurueckklappt
+      setTransitioning(true);
+      setFlipped(false);
+      flipBackTimer.current = setTimeout(() => {
+        setIdx((i) => i + 1);
+        setTransitioning(false);
+      }, FLIP_MS);
+    } else {
+      setIdx((i) => i + 1);
+    }
   };
 
   const reshuffle = () => {
+    clearTimeout(flipBackTimer.current);
+    setTransitioning(false);
     setOrder(shuffle(pool).map((t) => t.id));
     setIdx(0);
     setFlipped(false);
@@ -268,7 +291,10 @@ function FlashcardMode({ pool, known, toggleKnown }) {
         </button>
       </div>
 
-      <div className="card-stage" onClick={() => setFlipped((f) => !f)}>
+      <div
+        className="card-stage"
+        onClick={() => { if (!transitioning) setFlipped((f) => !f); }}
+      >
         <div className={`flashcard ${flipped ? "is-flipped" : ""}`}>
           <div className="face face-front">
             <span className="face-label">DE</span>
@@ -294,7 +320,7 @@ function FlashcardMode({ pool, known, toggleKnown }) {
         >
           {known.has(current.id) ? "✓ Als unsicher markieren" : "Als sicher markieren"}
         </button>
-        <button className="btn btn-primary" onClick={next}>
+        <button className="btn btn-primary" onClick={next} disabled={transitioning}>
           Nächste →
         </button>
       </div>
@@ -688,7 +714,7 @@ const CSS = `
   position: relative;
   width: min(420px, 100%);
   height: 100%;
-  transition: transform 0.45s cubic-bezier(0.4, 0.2, 0.2, 1);
+  transition: transform ${FLIP_MS / 1000}s cubic-bezier(0.4, 0.2, 0.2, 1);
   transform-style: preserve-3d;
 }
 .flashcard.is-flipped { transform: rotateY(180deg); }
