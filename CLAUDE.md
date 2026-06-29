@@ -53,8 +53,10 @@ Wenn ich eine neue App mitbringe (als Dateien oder Beschreibung):
 4. In `vercel.json` die Rewrite `{ "source": "/<name>/:path*", "destination": "/:path*" }`
    vor den Catch-all eintragen (Reihenfolge wichtig, siehe `wm2026-schiri/vercel.json`)
 5. Auf Vercel als neues Projekt verknüpfen (einmalig manuell durch mich)
-6. In `gateway/vercel.json` eine Rewrite-Zeile für `/<name>/:path*` ergänzen,
-   die auf die echte Produktions-Domain des neuen Projekts zeigt
+6. In `gateway/vercel.json` ZWEI Rewrite-Zeilen ergänzen (siehe `gateway/README.md`
+   für die genaue Begründung): eine literale für `/<name>/` und eine mit
+   `:path*` für Unterpfade/Assets, beide auf die echte Produktions-Domain
+   des neuen Projekts zeigend
 7. In diesem CLAUDE.md den neuen Ordner dokumentieren
 
 ## Bewertungs-Schema (matches.js)

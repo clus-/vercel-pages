@@ -1,6 +1,8 @@
 {
   "rewrites": [
+    { "source": "/wm2026-schiri/", "destination": "https://wm2026-schiri.vercel.app/wm2026-schiri/" },
     { "source": "/wm2026-schiri/:path*", "destination": "https://wm2026-schiri.vercel.app/wm2026-schiri/:path*" },
+    { "source": "/sailing-terminology/", "destination": "https://sailing-terminology.vercel.app/sailing-terminology/" },
     { "source": "/sailing-terminology/:path*", "destination": "https://sailing-terminology.vercel.app/sailing-terminology/:path*" }
   ]
 }

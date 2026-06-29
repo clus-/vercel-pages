@@ -22,4 +22,14 @@ dieses Projekt stellt nur die gemeinsame Domain bereit.
 2. Im Tool-Unterordner: `base: '/<name>/'` in `vite.config.js` setzen
 3. Im Tool-Unterordner `vercel.json`: Rewrite `{ "source": "/<name>/:path*", "destination": "/:path*" }`
    vor dem Catch-all eintragen
-4. Hier in `gateway/vercel.json` eine neue Rewrite-Zeile für `/<name>/:path*` ergänzen
+4. Hier in `gateway/vercel.json` ZWEI neue Rewrite-Zeilen für `/<name>/` ergänzen
+   (nicht nur eine!): eine literale für den exakten Pfad mit Slash und eine
+   mit `:path*` für Unterpfade/Assets. `/<name>/:path*` matched aus einem
+   path-to-regexp-Eigenheit zwar `/<name>` (ohne Slash) und `/<name>/x`,
+   aber NICHT `/<name>/` (Slash ohne nachfolgendes Segment) - ohne die
+   literale Zeile bekommt man dort einen 404.
+
+```json
+{ "source": "/<name>/", "destination": "https://<name>.vercel.app/<name>/" },
+{ "source": "/<name>/:path*", "destination": "https://<name>.vercel.app/<name>/:path*" }
+```
