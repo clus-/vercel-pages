@@ -16,9 +16,16 @@ die über Vercel mit fixer URL öffentlich erreichbar sind.
 │   ├── src/
 │   │   └── App.jsx        # Begriffe liegen im TERMS-Array, Lernstand via localStorage
 │   └── ...
+├── gateway/               # Bindet pages.cfizzy.com, proxyt per Rewrite auf die Tool-Domains
 ├── weiteres-projekt/      # Zukünftige Seiten gleich hier daneben
 └── CLAUDE.md              # Diese Datei
 ```
+
+Alle Tools sind unabhängige Vercel-Projekte mit eigenem Deploy (siehe
+"Neue Seite hinzufügen" unten). `gateway/` ist die einzige Ausnahme: kein
+eigenständiges Tool, sondern nur ein dünner Reverse-Proxy, der die
+gemeinsame Domain `pages.cfizzy.com` pfadbasiert auf die einzelnen
+Tool-Deployments verteilt (siehe `gateway/README.md`).
 
 ## Deine Aufgaben
 
@@ -42,8 +49,13 @@ Vercel deployed danach automatisch (~30 Sek).
 Wenn ich eine neue App mitbringe (als Dateien oder Beschreibung):
 1. Neuen Ordner im Root anlegen, z.B. `tippspiel/`
 2. Vite+React Setup analog zu `wm2026-schiri/`
-3. Auf Vercel als neues Projekt verknüpfen (einmalig manuell durch mich)
-4. In diesem CLAUDE.md den neuen Ordner dokumentieren
+3. `base: '/<name>/'` in `vite.config.js` setzen
+4. In `vercel.json` die Rewrite `{ "source": "/<name>/:path*", "destination": "/:path*" }`
+   vor den Catch-all eintragen (Reihenfolge wichtig, siehe `wm2026-schiri/vercel.json`)
+5. Auf Vercel als neues Projekt verknüpfen (einmalig manuell durch mich)
+6. In `gateway/vercel.json` eine Rewrite-Zeile für `/<name>/:path*` ergänzen,
+   die auf die echte Produktions-Domain des neuen Projekts zeigt
+7. In diesem CLAUDE.md den neuen Ordner dokumentieren
 
 ## Bewertungs-Schema (matches.js)
 

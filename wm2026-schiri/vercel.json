@@ -1,3 +1,6 @@
 {
-  "rewrites": [{ "source": "/(.*)", "destination": "/" }]
+  "rewrites": [
+    { "source": "/wm2026-schiri/:path*", "destination": "/:path*" },
+    { "source": "/(.*)", "destination": "/" }
+  ]
 }

@@ -1,3 +1,6 @@
 {
-  "rewrites": [{ "source": "/(.*)", "destination": "/" }]
+  "rewrites": [
+    { "source": "/sailing-terminology/:path*", "destination": "/:path*" },
+    { "source": "/(.*)", "destination": "/" }
+  ]
 }
