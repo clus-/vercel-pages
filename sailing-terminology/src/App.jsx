@@ -13,6 +13,7 @@ const TERMS = [
   { de: "Heck", en: "Stern", cat: "Rumpf & Ausrüstung" },
   { de: "Backbord", en: "Port", cat: "Rumpf & Ausrüstung" },
   { de: "Steuerbord", en: "Starboard", cat: "Rumpf & Ausrüstung" },
+  { de: "Reling", en: "Guardrail", cat: "Rumpf & Ausrüstung" },
 
   // Segel & Rigg
   { de: "Großsegel", en: "Mainsail", cat: "Segel & Rigg" },
@@ -33,6 +34,7 @@ const TERMS = [
   { de: "Mann über Bord", en: "Man overboard", cat: "Manöver" },
   { de: "Anlegen", en: "Coming alongside", cat: "Manöver" },
   { de: "Ankern", en: "Anchoring", cat: "Manöver" },
+  { de: "Leine klar machen", en: "Clear the line", cat: "Manöver" },
 
   // Kurse zum Wind
   { de: "Am-Wind-Kurs", en: "Close-hauled", cat: "Kurse zum Wind" },
