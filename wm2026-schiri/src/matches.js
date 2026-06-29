@@ -160,7 +160,9 @@ export const MATCHES = [
     bewertung: {
       kurzfazit: "WM-Debut ohne Patzer - klares Spiel erleichterte Aufgabe",
       details: "Jalal Jayed feierte seinen WM-Einstand beim deutschen Kanatersieg. Der 39-jaehrige Marokkaner steht seit 2019 auf der FIFA-Liste, hatte aber vor diesem Spiel erst vier Einsaetze beim Afrika-Cup. Tore: Nmecha (6.), Schlotterbeck (38.), Havertz (45.+5, 88.), Musiala (47.), Brown (68.), Undav (78.) - fuer Curacao traf Comenencia (21.). Keine nennenswerten Fehlentscheidungen.",
-      noten: [],
+      noten: [
+        { quelle: "kicker", note: 3.0 },
+      ],
       quellen: "kicker.de, heidelberg24.de, nationalmannschaft.net"
     }
   },
@@ -175,7 +177,9 @@ export const MATCHES = [
     bewertung: {
       kurzfazit: "Dramatisches Spiel gut im Griff - kein Fehlgriff beim Kamada-Ausgleich",
       details: "Elfath, marokkanisch-staemmiger US-Referee und 2022 vierter Offizieller im WM-Finale, leitete einen packenden 2:2-Krimi. Van Dijk (50.), Nakamura (57.), Summerville (64.) und Kamada (88.) trafen. Der dramatische Ausgleich in der 88. Minute war regelkonform. Elfath galt in der MLS als Referee des Jahres 2020 und 2022.",
-      noten: [],
+      noten: [
+        { quelle: "kicker", note: 2.0 },
+      ],
       quellen: "Outlook India, NBC Sports, bolavip.com"
     }
   },
@@ -190,7 +194,9 @@ export const MATCHES = [
     bewertung: {
       kurzfazit: "Neue Behandlungsregel erstmals eingesetzt - Ecuador-Protest nach Sieg der Elfenbeinkueste",
       details: "Letexier sprang kurzfristig fuer den verletzten Michael Oliver ein. Setzte erstmals bei dieser WM die neue Regel um, wonach behandelte Spieler das Feld fuer mindestens eine Minute verlassen muessen (Caicedo, 18. Min). Ecuador verlor trotz viermaligem Pfosten-/Lattentreffern mit 0:1 - Amad erzielte in der 90. Minute den Siegtreffer. Ecuadors Spieler protestierten lautstark gegen mehrere Entscheidungen.",
-      noten: [],
+      noten: [
+        { quelle: "kicker", note: 2.0 },
+      ],
       quellen: "t-online.de, fussball-nachschlagewerk.de, weekend.at"
     }
   },
@@ -205,7 +211,9 @@ export const MATCHES = [
     bewertung: {
       kurzfazit: "Klare Angelegenheit - Chip-im-Ball-Technologie bei Isak-Tor entscheidend",
       details: "Falcon Perez nutzte erstmals bei dieser WM den Chip im Ball, um eine kleine Beruehrung Isaks auf einer Hereingabe nachzuweisen und eine Abseits-Entscheidung zu kippen - Tor gueltig (30. Min). Schweden dominierte mit einem Galaauftritt: Ayari (7.), Isak (30.), Gyoekeres (59.), Svanberg sowie Ayari erneut (90.+6) - Tunesien traf durch Rekik (43.).",
-      noten: [],
+      noten: [
+        { quelle: "kicker", note: 2.5 },
+      ],
       quellen: "srf.ch, sportschau.de, zdf.de, fussball-nachschlagewerk.de"
     }
   },
