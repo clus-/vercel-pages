@@ -5,92 +5,112 @@ import { useState, useEffect, useMemo, useRef, useCallback } from "react";
 --------------------------------------------------------- */
 const TERMS = [
   // Rumpf & Ausrüstung
-  { de: "Rumpf", en: "Hull", cat: "Rumpf & Ausrüstung" },
-  { de: "Kiel", en: "Keel", cat: "Rumpf & Ausrüstung" },
-  { de: "Ruder", en: "Rudder", cat: "Rumpf & Ausrüstung" },
-  { de: "Pinne", en: "Tiller", cat: "Rumpf & Ausrüstung" },
-  { de: "Bug", en: "Bow", cat: "Rumpf & Ausrüstung" },
-  { de: "Heck", en: "Stern", cat: "Rumpf & Ausrüstung" },
-  { de: "Backbord", en: "Port", cat: "Rumpf & Ausrüstung" },
-  { de: "Steuerbord", en: "Starboard", cat: "Rumpf & Ausrüstung" },
-  { de: "Reling", en: "Guardrail", cat: "Rumpf & Ausrüstung" },
+  { de: "Rumpf", en: "Hull", cat: "Rumpf & Ausrüstung", exDE: "Der Rumpf ist aus GFK gefertigt.", exEN: "The hull is made of fibreglass." },
+  { de: "Kiel", en: "Keel", cat: "Rumpf & Ausrüstung", exDE: "Der Kiel verhindert, dass das Boot kentert.", exEN: "The keel prevents the boat from capsizing." },
+  { de: "Ruder", en: "Rudder", cat: "Rumpf & Ausrüstung", exDE: "Das Ruder steuert den Kurs des Bootes.", exEN: "The rudder steers the boat's course." },
+  { de: "Pinne", en: "Tiller", cat: "Rumpf & Ausrüstung", exDE: "Zieh die Pinne zu dir, um abzufallen.", exEN: "Pull the tiller toward you to bear away." },
+  { de: "Bug", en: "Bow", cat: "Rumpf & Ausrüstung", exDE: "Der Bug schneidet durch die Wellen.", exEN: "The bow cuts through the waves." },
+  { de: "Heck", en: "Stern", cat: "Rumpf & Ausrüstung", exDE: "Die Gangway liegt am Heck des Schiffes.", exEN: "The gangway is at the stern of the vessel." },
+  { de: "Backbord", en: "Port", cat: "Rumpf & Ausrüstung", exDE: "Das rote Licht ist auf Backbordseite.", exEN: "The red light is on the port side." },
+  { de: "Steuerbord", en: "Starboard", cat: "Rumpf & Ausrüstung", exDE: "Das grüne Licht ist auf Steuerbordseite.", exEN: "The green light is on the starboard side." },
+  { de: "Reling", en: "Guardrail", cat: "Rumpf & Ausrüstung", exDE: "Halt dich an der Reling fest!", exEN: "Hold on to the guardrail!" },
+  { de: "Mast", en: "Mast", cat: "Rumpf & Ausrüstung", exDE: "Der Mast ist 18 Meter hoch.", exEN: "The mast is 18 metres tall." },
+  { de: "Winsch", en: "Winch", cat: "Rumpf & Ausrüstung", exDE: "Hol die Schot auf der Winsch ein!", exEN: "Haul the sheet in on the winch!" },
+  { de: "Klampe", en: "Cleat", cat: "Rumpf & Ausrüstung", exDE: "Belege die Leine an der Klampe.", exEN: "Belay the line on the cleat." },
+  { de: "Luk", en: "Hatch", cat: "Rumpf & Ausrüstung", exDE: "Schließ das Luk vor der Böe!", exEN: "Close the hatch before the squall!" },
+  { de: "Tiefgang", en: "Draft", cat: "Rumpf & Ausrüstung", exDE: "Zu wenig Wasser für unseren Tiefgang.", exEN: "Not enough water for our draft." },
+  { de: "Anker", en: "Anchor", cat: "Rumpf & Ausrüstung", exDE: "Der Anker hält auf sandigem Grund gut.", exEN: "The anchor holds well in sand." },
+  { de: "Cockpit", en: "Cockpit", cat: "Rumpf & Ausrüstung", exDE: "Im Cockpit sitzt der Steuermann.", exEN: "The helmsman sits in the cockpit." },
 
   // Segel & Rigg
-  { de: "Großsegel", en: "Mainsail", cat: "Segel & Rigg" },
-  { de: "Fock", en: "Jib", cat: "Segel & Rigg" },
-  { de: "Genua", en: "Genoa", cat: "Segel & Rigg" },
-  { de: "Spinnaker", en: "Spinnaker", cat: "Segel & Rigg" },
-  { de: "Vorstag", en: "Forestay", cat: "Segel & Rigg" },
-  { de: "Wante", en: "Shroud", cat: "Segel & Rigg" },
-  { de: "Großschot", en: "Mainsheet", cat: "Segel & Rigg" },
-  { de: "Fall", en: "Halyard", cat: "Segel & Rigg" },
+  { de: "Großsegel", en: "Mainsail", cat: "Segel & Rigg", exDE: "Wir setzen das Großsegel bei Wind 3.", exEN: "We hoist the mainsail in force 3." },
+  { de: "Fock", en: "Jib", cat: "Segel & Rigg", exDE: "Roll die Fock bei dieser Brise aus!", exEN: "Unfurl the jib in this breeze!" },
+  { de: "Genua", en: "Genoa", cat: "Segel & Rigg", exDE: "Die Genua überlappt den Mast weit.", exEN: "The genoa overlaps the mast considerably." },
+  { de: "Spinnaker", en: "Spinnaker", cat: "Segel & Rigg", exDE: "Vor dem Wind setzen wir den Spinnaker.", exEN: "We set the spinnaker when running downwind." },
+  { de: "Vorstag", en: "Forestay", cat: "Segel & Rigg", exDE: "Die Fock hängt am Vorstag.", exEN: "The jib is hanked to the forestay." },
+  { de: "Wante", en: "Shroud", cat: "Segel & Rigg", exDE: "Die Wanten halten den Mast seitlich.", exEN: "The shrouds support the mast laterally." },
+  { de: "Großschot", en: "Mainsheet", cat: "Segel & Rigg", exDE: "Fier die Großschot beim Abfallen!", exEN: "Ease the mainsheet when bearing away!" },
+  { de: "Fall", en: "Halyard", cat: "Segel & Rigg", exDE: "Hiss das Großsegel am Fall hoch!", exEN: "Hoist the mainsail on the halyard!" },
+  { de: "Baum", en: "Boom", cat: "Segel & Rigg", exDE: "Vorsicht – der Baum kommt beim Halsen!", exEN: "Watch out – the boom comes across when gybing!" },
+  { de: "Dirk", en: "Topping lift", cat: "Segel & Rigg", exDE: "Spann den Dirk, bevor du das Großsegel rollst.", exEN: "Tension the topping lift before furling the mainsail." },
+  { de: "Baumniederholer", en: "Kicker / Boom vang", cat: "Segel & Rigg", exDE: "Der Baumniederholer verhindert, dass der Baum aufsteigt.", exEN: "The boom vang prevents the boom from lifting." },
+  { de: "Achterliek", en: "Leech", cat: "Segel & Rigg", exDE: "Das Achterliek flattert – Schot nachgeben!", exEN: "The leech is fluttering – ease the sheet!" },
 
   // Manöver
-  { de: "Wende", en: "Tack", cat: "Manöver", note: "Wenden = Bug durch den Wind" },
-  { de: "Halse", en: "Gybe / Jibe", cat: "Manöver", note: "Halsen = Heck durch den Wind" },
-  { de: "Anluven", en: "Head up / Luff up", cat: "Manöver" },
-  { de: "Abfallen", en: "Bear away", cat: "Manöver" },
-  { de: "Beidrehen", en: "Heave to", cat: "Manöver" },
-  { de: "Mann über Bord", en: "Man overboard", cat: "Manöver" },
-  { de: "Anlegen", en: "Coming alongside", cat: "Manöver" },
-  { de: "Ankern", en: "Anchoring", cat: "Manöver" },
-  { de: "Leine klar machen", en: "Clear the line", cat: "Manöver" },
+  { de: "Wende", en: "Tack", cat: "Manöver", note: "Wenden = Bug durch den Wind", exDE: "Klar zum Wenden – Lee-oh!", exEN: "Ready about – lee-oh!" },
+  { de: "Halse", en: "Gybe / Jibe", cat: "Manöver", note: "Halsen = Heck durch den Wind", exDE: "Vorsicht beim Halsen – der Baum kommt!", exEN: "Watch out when gybing – the boom is coming!" },
+  { de: "Anluven", en: "Head up / Luff up", cat: "Manöver", exDE: "Luf an und steuere enger an den Wind!", exEN: "Head up and sail closer to the wind!" },
+  { de: "Abfallen", en: "Bear away", cat: "Manöver", exDE: "Fall ab und geh auf Raumschotkurs!", exEN: "Bear away and head onto a reach!" },
+  { de: "Beidrehen", en: "Heave to", cat: "Manöver", exDE: "Wir drehen bei, um eine Pause zu machen.", exEN: "We heave to for a rest." },
+  { de: "Mann über Bord", en: "Man overboard", cat: "Manöver", exDE: "Mann über Bord – sofort Rettungsring werfen!", exEN: "Man overboard – throw the lifebuoy immediately!" },
+  { de: "Anlegen", en: "Coming alongside", cat: "Manöver", exDE: "Wir legen backbords an den Steg an.", exEN: "We're coming alongside the berth on the port side." },
+  { de: "Ankern", en: "Anchoring", cat: "Manöver", exDE: "Wir ankern in der geschützten Bucht.", exEN: "We're anchoring in the sheltered bay." },
+  { de: "Leine klar machen", en: "Clear the line", cat: "Manöver", exDE: "Mach die Leine klar, bevor wir ablegen!", exEN: "Clear the line before we cast off!" },
+  { de: "Reffen", en: "To reef", cat: "Manöver", exDE: "Bei Stärke 6 müssen wir das Großsegel reffen.", exEN: "In force 6 we need to reef the mainsail." },
+  { de: "Ablegen", en: "To cast off", cat: "Manöver", exDE: "Alle Leinen los – wir legen ab!", exEN: "Cast off all lines – we're departing!" },
 
   // Kurse zum Wind
-  { de: "Am-Wind-Kurs", en: "Close-hauled", cat: "Kurse zum Wind" },
-  { de: "Halber Wind", en: "Beam reach", cat: "Kurse zum Wind" },
-  { de: "Raumschotskurs", en: "Broad reach", cat: "Kurse zum Wind" },
-  { de: "Vor dem Wind", en: "Running", cat: "Kurse zum Wind" },
-  { de: "Luv", en: "Windward", cat: "Kurse zum Wind" },
-  { de: "Lee", en: "Leeward", cat: "Kurse zum Wind" },
-  { de: "Toter Winkel", en: "No-go zone", cat: "Kurse zum Wind" },
-  { de: "Hoch am Wind", en: "Pinching", cat: "Kurse zum Wind" },
-  {
-    de: "Fahrtwind",
-    en: "Boat's motion wind",
-    cat: "Kurse zum Wind",
-    note: "Wahrer Wind + Fahrtwind = Scheinbarer Wind (apparent wind) — kein exaktes 1-Wort-Äquivalent im Englischen",
-  },
+  { de: "Am-Wind-Kurs", en: "Close-hauled", cat: "Kurse zum Wind", exDE: "Am-Wind-Kurs ist der schärfste Kurs.", exEN: "Close-hauled is the closest point of sail to the wind." },
+  { de: "Halber Wind", en: "Beam reach", cat: "Kurse zum Wind", exDE: "Bei halbem Wind segeln wir schnell.", exEN: "On a beam reach we sail fast." },
+  { de: "Raumschotskurs", en: "Broad reach", cat: "Kurse zum Wind", exDE: "Auf Raumschotskurs kommen wir gut voran.", exEN: "On a broad reach we make good progress." },
+  { de: "Vor dem Wind", en: "Running", cat: "Kurse zum Wind", exDE: "Vor dem Wind läuft das Boot ruhig.", exEN: "Running before the wind the boat is stable." },
+  { de: "Luv", en: "Windward", cat: "Kurse zum Wind", exDE: "Auf der Luvseite kommt der Wind an.", exEN: "The wind comes from the windward side." },
+  { de: "Lee", en: "Leeward", cat: "Kurse zum Wind", exDE: "Auf der Leeseite ist es ruhiger.", exEN: "It's calmer on the leeward side." },
+  { de: "Toter Winkel", en: "No-go zone", cat: "Kurse zum Wind", exDE: "Im toten Winkel kann das Segel nicht füllen.", exEN: "In the no-go zone the sail cannot fill." },
+  { de: "Hoch am Wind", en: "Pinching", cat: "Kurse zum Wind", exDE: "Hoch am Wind flattert das Vorliek.", exEN: "When pinching the luff starts to flutter." },
+  { de: "Scheinbarer Wind", en: "Apparent wind", cat: "Kurse zum Wind", note: "Wahrer Wind + Fahrtwind = Scheinbarer Wind", exDE: "Der scheinbare Wind kommt stärker und weiter vorn an.", exEN: "The apparent wind feels stronger and further forward." },
+  { de: "Wahrer Wind", en: "True wind", cat: "Kurse zum Wind", exDE: "Der wahre Wind kommt aus Nordwest.", exEN: "The true wind is from the north-west." },
 
   // Knoten
-  { de: "Achtknoten", en: "Figure-eight knot", cat: "Knoten" },
-  { de: "Palstek", en: "Bowline", cat: "Knoten" },
-  { de: "Webleinstek", en: "Clove hitch", cat: "Knoten" },
-  { de: "Kreuzknoten", en: "Reef knot", cat: "Knoten" },
-  { de: "Schotstek", en: "Sheet bend", cat: "Knoten" },
-  { de: "Rundtörn mit zwei halben Schlägen", en: "Round turn and two half hitches", cat: "Knoten" },
-  { de: "Stopperstek", en: "Rolling hitch", cat: "Knoten" },
-  { de: "Slipstek", en: "Slipped hitch", cat: "Knoten" },
+  { de: "Achtknoten", en: "Figure-eight knot", cat: "Knoten", exDE: "Mach einen Achtknoten ans Schotende!", exEN: "Tie a figure-eight at the end of the sheet!" },
+  { de: "Palstek", en: "Bowline", cat: "Knoten", exDE: "Ein Palstek lässt sich leicht lösen.", exEN: "A bowline is easy to untie even after loading." },
+  { de: "Webleinstek", en: "Clove hitch", cat: "Knoten", exDE: "Befestige die Leine mit einem Webleinstek am Poller.", exEN: "Secure the line to the bollard with a clove hitch." },
+  { de: "Kreuzknoten", en: "Reef knot", cat: "Knoten", exDE: "Binde die Reffleine mit einem Kreuzknoten.", exEN: "Tie the reefing line with a reef knot." },
+  { de: "Schotstek", en: "Sheet bend", cat: "Knoten", exDE: "Der Schotstek verbindet zwei verschieden dicke Leinen.", exEN: "The sheet bend joins two lines of different thickness." },
+  { de: "Rundtörn mit zwei halben Schlägen", en: "Round turn and two half hitches", cat: "Knoten", exDE: "Belege die Ankerleine mit einem Rundtörn.", exEN: "Secure the anchor line with a round turn and two half hitches." },
+  { de: "Stopperstek", en: "Rolling hitch", cat: "Knoten", exDE: "Ein Stopperstek hält auf einer gespannten Leine.", exEN: "A rolling hitch holds firm on a loaded line." },
+  { de: "Slipstek", en: "Slipped hitch", cat: "Knoten", exDE: "Ein Slipstek lässt sich blitzschnell lösen.", exEN: "A slipped hitch can be released instantly." },
 
   // Wetter
-  { de: "Flaute", en: "Calm", cat: "Wetter" },
-  { de: "Böe", en: "Gust", cat: "Wetter" },
-  { de: "Windstärke", en: "Wind force", cat: "Wetter" },
-  { de: "Hochdruckgebiet", en: "High-pressure area", cat: "Wetter" },
-  { de: "Tiefdruckgebiet", en: "Low-pressure area", cat: "Wetter" },
-  { de: "Seegang", en: "Sea state", cat: "Wetter" },
-  { de: "Nebel", en: "Fog", cat: "Wetter" },
-  { de: "Gewitter", en: "Thunderstorm", cat: "Wetter" },
+  { de: "Flaute", en: "Calm", cat: "Wetter", exDE: "In der Flaute hängen die Segel schlaff.", exEN: "In a calm the sails hang limp." },
+  { de: "Böe", en: "Gust", cat: "Wetter", exDE: "Eine Böe ließ das Boot schlagartig krängen.", exEN: "A gust suddenly heeled the boat." },
+  { de: "Windstärke", en: "Wind force", cat: "Wetter", exDE: "Windstärke 5 ist ideales Segelwetter.", exEN: "Force 5 is ideal sailing weather." },
+  { de: "Hochdruckgebiet", en: "High-pressure area", cat: "Wetter", exDE: "Das Hoch bringt beständiges, ruhiges Wetter.", exEN: "The high brings settled, calm weather." },
+  { de: "Tiefdruckgebiet", en: "Low-pressure area", cat: "Wetter", exDE: "Das Tief bringt Wind und Regen.", exEN: "The low brings wind and rain." },
+  { de: "Seegang", en: "Sea state", cat: "Wetter", exDE: "Bei hohem Seegang war das Cockpit nass.", exEN: "In a high sea state the cockpit was wet." },
+  { de: "Nebel", en: "Fog", cat: "Wetter", exDE: "Im Nebel immer das Nebelhorn benutzen!", exEN: "Always sound the fog horn in fog!" },
+  { de: "Gewitter", en: "Thunderstorm", cat: "Wetter", exDE: "Gewitterfront im Anmarsch – in den Hafen!", exEN: "Thunderstorm approaching – head for port!" },
+  { de: "Schwell", en: "Swell", cat: "Wetter", exDE: "Hoher Schwell aus Nordwest machte die Fahrt ungemütlich.", exEN: "Heavy swell from the north-west made the passage uncomfortable." },
+  { de: "Windschatten", en: "Wind shadow", cat: "Wetter", exDE: "Im Windschatten der Insel herrscht Flaute.", exEN: "In the wind shadow of the island there is a calm." },
 
   // Navigation
-  { de: "Seekarte", en: "Chart", cat: "Navigation" },
-  { de: "Kompass", en: "Compass", cat: "Navigation" },
-  { de: "Peilung", en: "Bearing", cat: "Navigation" },
-  { de: "Kurs", en: "Course", cat: "Navigation" },
-  { de: "Gezeiten", en: "Tides", cat: "Navigation" },
-  { de: "Strömung", en: "Current", cat: "Navigation" },
-  { de: "Wegpunkt", en: "Waypoint", cat: "Navigation" },
-  { de: "Lotung", en: "Sounding", cat: "Navigation" },
+  { de: "Seekarte", en: "Chart", cat: "Navigation", exDE: "Die Seekarte zeigt alle Untiefen.", exEN: "The chart shows all the shallows." },
+  { de: "Kompass", en: "Compass", cat: "Navigation", exDE: "Steuere Kurs 270 Grad nach dem Kompass.", exEN: "Steer a course of 270 degrees by the compass." },
+  { de: "Peilung", en: "Bearing", cat: "Navigation", exDE: "Nimm eine Peilung vom Leuchtturm!", exEN: "Take a bearing from the lighthouse!" },
+  { de: "Kurs", en: "Course", cat: "Navigation", exDE: "Unser Kurs ist Südsüdwest.", exEN: "Our course is south-southwest." },
+  { de: "Gezeiten", en: "Tides", cat: "Navigation", exDE: "Die Gezeiten wechseln alle sechs Stunden.", exEN: "The tides change every six hours." },
+  { de: "Strömung", en: "Current", cat: "Navigation", exDE: "Die Strömung treibt uns vom Kurs ab.", exEN: "The current is setting us off course." },
+  { de: "Wegpunkt", en: "Waypoint", cat: "Navigation", exDE: "Der nächste Wegpunkt liegt 12 Meilen entfernt.", exEN: "The next waypoint is 12 miles away." },
+  { de: "Lotung", en: "Sounding", cat: "Navigation", exDE: "Nimm eine Lotung, bevor wir ankern!", exEN: "Take a sounding before we anchor!" },
+  { de: "GPS", en: "GPS", cat: "Navigation", exDE: "Das GPS zeigt unsere genaue Position.", exEN: "The GPS shows our exact position." },
+  { de: "Echolot", en: "Echo sounder", cat: "Navigation", exDE: "Das Echolot misst die Tiefe unter dem Kiel.", exEN: "The echo sounder measures the depth below the keel." },
+  { de: "Leuchtturm", en: "Lighthouse", cat: "Navigation", exDE: "Der Leuchtturm blinkt alle fünf Sekunden.", exEN: "The lighthouse flashes every five seconds." },
+  { de: "Fahrwasser", en: "Channel / Fairway", cat: "Navigation", exDE: "Im Fahrwasser haben wir genug Wasser unterm Kiel.", exEN: "In the channel we have enough water under the keel." },
+  { de: "Knoten (Geschwindigkeit)", en: "Knot (speed)", cat: "Navigation", exDE: "Wir segeln mit 6 Knoten.", exEN: "We're sailing at 6 knots." },
 
   // Vorfahrt & Sicherheit
-  { de: "Vorfahrt", en: "Right of way", cat: "Vorfahrt & Sicherheit" },
-  { de: "Ausweichpflichtiges Fahrzeug", en: "Give-way vessel", cat: "Vorfahrt & Sicherheit" },
-  { de: "Kursbeibehaltendes Fahrzeug", en: "Stand-on vessel", cat: "Vorfahrt & Sicherheit" },
-  { de: "Rettungsweste", en: "Life jacket", cat: "Vorfahrt & Sicherheit" },
-  { de: "Rettungsring", en: "Lifebuoy", cat: "Vorfahrt & Sicherheit" },
-  { de: "Signalkörper", en: "Shape (signal)", cat: "Vorfahrt & Sicherheit" },
-  { de: "Seenotsignal", en: "Distress signal", cat: "Vorfahrt & Sicherheit" },
-  { de: "Festmacherleine", en: "Mooring line", cat: "Vorfahrt & Sicherheit" },
+  { de: "Vorfahrt", en: "Right of way", cat: "Vorfahrt & Sicherheit", exDE: "Wer hat Vorfahrt beim Kreuzen?", exEN: "Who has right of way when crossing?" },
+  { de: "Ausweichpflichtiges Fahrzeug", en: "Give-way vessel", cat: "Vorfahrt & Sicherheit", exDE: "Als Motorboot sind wir das ausweichpflichtige Fahrzeug.", exEN: "As a motorboat we are the give-way vessel." },
+  { de: "Kursbeibehaltendes Fahrzeug", en: "Stand-on vessel", cat: "Vorfahrt & Sicherheit", exDE: "Als Segelboot sind wir kursbeibehaltendes Fahrzeug.", exEN: "As a sailing boat we are the stand-on vessel." },
+  { de: "Rettungsweste", en: "Life jacket", cat: "Vorfahrt & Sicherheit", exDE: "Beim Nachtsegelei immer Rettungsweste anlegen!", exEN: "Always wear a life jacket when sailing at night!" },
+  { de: "Rettungsring", en: "Lifebuoy", cat: "Vorfahrt & Sicherheit", exDE: "Der Rettungsring hängt griffbereit am Heck.", exEN: "The lifebuoy hangs within reach at the stern." },
+  { de: "Signalkörper", en: "Shape (signal)", cat: "Vorfahrt & Sicherheit", exDE: "Das schwarze Rhombus-Signal zeigt: Boot unter Maschine.", exEN: "The black diamond shape indicates: vessel under power." },
+  { de: "Seenotsignal", en: "Distress signal", cat: "Vorfahrt & Sicherheit", exDE: "Drei rote Leuchtkugeln = Seenotsignal.", exEN: "Three red flares = distress signal." },
+  { de: "Festmacherleine", en: "Mooring line", cat: "Vorfahrt & Sicherheit", exDE: "Wirf die Festmacherleine an Land!", exEN: "Throw the mooring line ashore!" },
+  { de: "Sicherheitsgurt", en: "Safety harness", cat: "Vorfahrt & Sicherheit", exDE: "Im Sturm immer den Sicherheitsgurt anlegen!", exEN: "Always wear a safety harness in a storm!" },
+  { de: "Sicherheitsleine", en: "Jackline", cat: "Vorfahrt & Sicherheit", exDE: "Hak dich an die Sicherheitsleine ein, bevor du nach vorn gehst.", exEN: "Clip onto the jackline before going forward." },
+  { de: "Überlebensinsel", en: "Life raft", cat: "Vorfahrt & Sicherheit", exDE: "Die Überlebensinsel ist die letzte Rettung.", exEN: "The life raft is the last resort." },
+  { de: "EPIRB", en: "EPIRB", cat: "Vorfahrt & Sicherheit", exDE: "Der EPIRB wird bei echtem Notfall aktiviert.", exEN: "The EPIRB is activated in a genuine emergency." },
 ].map((t, i) => ({ ...t, id: `t${i}` }));
 
 const CATEGORIES = [...new Set(TERMS.map((t) => t.cat))];
@@ -311,12 +331,14 @@ function FlashcardMode({ pool, known, toggleKnown }) {
               <div className="face face-front">
                 <span className="face-label">DE</span>
                 <span className="face-term">{prevCard.de}</span>
+                {prevCard.exDE && <span className="face-note">{prevCard.exDE}</span>}
                 <span className="tap-hint">tippen zum umdrehen</span>
               </div>
               <div className="face face-back">
                 <span className="face-label">EN</span>
                 <span className="face-term">{prevCard.en}</span>
-                {prevCard.note && <span className="face-note">{prevCard.note}</span>}
+                {prevCard.exEN && <span className="face-note">{prevCard.exEN}</span>}
+                {prevCard.note && <span className="face-note face-note-meta">{prevCard.note}</span>}
               </div>
             </div>
           </div>
@@ -326,12 +348,14 @@ function FlashcardMode({ pool, known, toggleKnown }) {
             <div className="face face-front">
               <span className="face-label">DE</span>
               <span className="face-term">{current.de}</span>
+              {current.exDE && <span className="face-note">{current.exDE}</span>}
               <span className="tap-hint">tippen zum umdrehen</span>
             </div>
             <div className="face face-back">
               <span className="face-label">EN</span>
               <span className="face-term">{current.en}</span>
-              {current.note && <span className="face-note">{current.note}</span>}
+              {current.exEN && <span className="face-note">{current.exEN}</span>}
+              {current.note && <span className="face-note face-note-meta">{current.note}</span>}
             </div>
           </div>
         </div>
@@ -498,7 +522,6 @@ function BrowseMode({ pool }) {
             <tr>
               <th>Deutsch</th>
               <th>English</th>
-              <th>Kategorie</th>
             </tr>
           </thead>
           <tbody>
@@ -506,7 +529,6 @@ function BrowseMode({ pool }) {
               <tr key={t.id}>
                 <td>{t.de}</td>
                 <td>{t.en}</td>
-                <td className="cat-cell">{t.cat}</td>
               </tr>
             ))}
           </tbody>
@@ -795,7 +817,8 @@ html, body { background: var(--navy-deep); }
   font-weight: 600;
   line-height: 1.25;
 }
-.face-note { font-size: 12.5px; opacity: 0.8; max-width: 320px; }
+.face-note { font-size: 12.5px; opacity: 0.85; max-width: 320px; }
+.face-note-meta { font-size: 11px; opacity: 0.6; font-style: italic; }
 .tap-hint { font-size: 11px; color: #8a8275; }
 
 .cat-tag {
