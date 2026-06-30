@@ -155,7 +155,9 @@ const CATEGORIES = [...new Set(TERMS.map((t) => t.cat))];
 /* ---------------------------------------------------------
    Storage helpers (persistente Lernstände)
 --------------------------------------------------------- */
-const STORE_KEY = "seemannssprache:known-v1";
+const STORE_KEY   = "seemannssprache:known-v1";
+const CORRECT_KEY = "seemannssprache:correct-v1";
+const GRADUATE_AT = 3;
 
 function useKnownStore() {
   const [known, setKnown] = useState(() => new Set());
@@ -165,40 +167,63 @@ function useKnownStore() {
     try {
       const raw = localStorage.getItem(STORE_KEY);
       if (raw) setKnown(new Set(JSON.parse(raw)));
-    } catch (_) {
-      // kein gespeicherter Stand vorhanden
-    } finally {
-      setReady(true);
-    }
+    } catch (_) {}
+    finally { setReady(true); }
   }, []);
 
-  const persist = useCallback((nextSet) => {
-    try {
-      localStorage.setItem(STORE_KEY, JSON.stringify([...nextSet]));
-    } catch (_) {
-      /* still in-memory even if persistence fails */
-    }
+  const persistKnown = useCallback((nextSet) => {
+    try { localStorage.setItem(STORE_KEY, JSON.stringify([...nextSet])); } catch (_) {}
   }, []);
 
-  const toggleKnown = useCallback(
-    (id, value) => {
-      setKnown((prev) => {
-        const next = new Set(prev);
-        if (value) next.add(id);
-        else next.delete(id);
-        persist(next);
-        return next;
-      });
-    },
-    [persist]
-  );
+  const toggleKnown = useCallback((id, value) => {
+    setKnown((prev) => {
+      const next = new Set(prev);
+      if (value) next.add(id); else next.delete(id);
+      persistKnown(next);
+      return next;
+    });
+  }, [persistKnown]);
 
   const resetKnown = useCallback(() => {
     setKnown(new Set());
-    persist(new Set());
-  }, [persist]);
+    persistKnown(new Set());
+    try { localStorage.removeItem(CORRECT_KEY); } catch (_) {}
+  }, [persistKnown]);
 
   return { known, ready, toggleKnown, resetKnown };
+}
+
+function useProgressStore(toggleKnown) {
+  const [counts, setCounts] = useState(() => {
+    try {
+      const raw = localStorage.getItem(CORRECT_KEY);
+      return raw ? JSON.parse(raw) : {};
+    } catch { return {}; }
+  });
+
+  const persistCounts = (c) => {
+    try { localStorage.setItem(CORRECT_KEY, JSON.stringify(c)); } catch (_) {}
+  };
+
+  const recordCorrect = useCallback((id) => {
+    setCounts((prev) => {
+      const next = { ...prev, [id]: (prev[id] ?? 0) + 1 };
+      persistCounts(next);
+      if (next[id] >= GRADUATE_AT) toggleKnown(id, true);
+      return next;
+    });
+  }, [toggleKnown]);
+
+  const resetCorrect = useCallback((id) => {
+    setCounts((prev) => {
+      const next = { ...prev, [id]: 0 };
+      persistCounts(next);
+      return next;
+    });
+    toggleKnown(id, false);
+  }, [toggleKnown]);
+
+  return { counts, recordCorrect, resetCorrect };
 }
 
 /* ---------------------------------------------------------
@@ -273,11 +298,11 @@ function CompassRose({ size = 64, spin = true }) {
 /* ---------------------------------------------------------
    Flashcard Mode
 --------------------------------------------------------- */
-function FlashcardMode({ pool, known, toggleKnown }) {
+function FlashcardMode({ pool, known, counts, recordCorrect, resetCorrect }) {
   const [order, setOrder] = useState(() => shuffle(pool).map((t) => t.id));
   const [idx, setIdx] = useState(0);
   const [flipped, setFlipped] = useState(false);
-  const [showKnownOnly, setShowKnownOnly] = useState("all"); // all | unknown | known
+  const [showKnownOnly, setShowKnownOnly] = useState("all");
   const [slideOut, setSlideOut] = useState(false);
   const [prevCardData, setPrevCardData] = useState(null);
   const [prevFlipped, setPrevFlipped] = useState(false);
@@ -318,23 +343,23 @@ function FlashcardMode({ pool, known, toggleKnown }) {
     }, SLIDE_MS);
   };
 
-  const next = () => startSlide(current, flipped, () => setIdx((i) => i + 1));
-
-  const handleToggleKnown = () => {
+  // Advance to next card, reshuffling the pool when the cycle ends
+  const advance = (actionFn) => {
     if (!current) return;
-    const isKnown = known.has(current.id);
-    // Will this card disappear from the filtered view after toggling?
-    const willLeave =
-      (showKnownOnly === "unknown" && !isKnown) ||
-      (showKnownOnly === "known"   &&  isKnown);
-    if (willLeave) {
-      // Capture the outgoing card before filteredOrder changes, then slide
-      startSlide(current, flipped, () => toggleKnown(current.id, !isKnown));
-    } else {
-      toggleKnown(current.id, !isKnown);
-      setFlipped(false);
-    }
+    const isLast = idx >= filteredOrder.length - 1;
+    startSlide(current, flipped, () => {
+      actionFn();
+      if (isLast) {
+        setOrder(shuffle(pool).map((t) => t.id));
+        setIdx(0);
+      } else {
+        setIdx((i) => i + 1);
+      }
+    });
   };
+
+  const handleCorrect   = () => advance(() => recordCorrect(current.id));
+  const handleIncorrect = () => advance(() => resetCorrect(current.id));
 
   const reshuffle = () => {
     clearTimeout(slideTimer.current);
@@ -413,19 +438,16 @@ function FlashcardMode({ pool, known, toggleKnown }) {
       <div className="cat-tag">{current.cat}</div>
 
       <div className="action-row">
-        <button
-          className={`btn ${known.has(current.id) ? "btn-mark-unsafe" : "btn-mark-safe"}`}
-          onClick={handleToggleKnown}
-        >
-          {known.has(current.id) ? "✓ Als unsicher markieren" : "Als sicher markieren"}
+        <button className="btn btn-mark-unsafe" onClick={handleIncorrect} disabled={slideOut}>
+          ✗ Noch nicht
         </button>
-        <button className="btn btn-primary" onClick={next} disabled={slideOut}>
-          Nächste →
+        <button className="btn btn-mark-safe" onClick={handleCorrect} disabled={slideOut}>
+          ✓ Gewusst {"●".repeat(Math.min(counts[current.id] ?? 0, GRADUATE_AT))}{"○".repeat(Math.max(0, GRADUATE_AT - (counts[current.id] ?? 0)))}
         </button>
       </div>
 
       <div className="depth-mark">
-        {(idx % filteredOrder.length) + 1} / {filteredOrder.length}
+        {(idx % Math.max(filteredOrder.length, 1)) + 1} / {filteredOrder.length}
       </div>
     </div>
   );
@@ -434,7 +456,7 @@ function FlashcardMode({ pool, known, toggleKnown }) {
 /* ---------------------------------------------------------
    Quiz Mode — Selbsteinschätzung (kein Multiple Choice)
 --------------------------------------------------------- */
-function QuizMode({ pool }) {
+function QuizMode({ pool, counts, recordCorrect, resetCorrect }) {
   const [direction, setDirection] = useState("de-en");
   const [round, setRound] = useState(0);
   const [score, setScore] = useState({ correct: 0, total: 0 });
@@ -463,12 +485,17 @@ function QuizMode({ pool }) {
   }, [shuffled, round, direction, pool]);
 
   const judge = (correct) => {
-    setScore((s) => ({
-      correct: s.correct + (correct ? 1 : 0),
-      total: s.total + 1,
-    }));
+    if (correct) recordCorrect(question.term.id);
+    else         resetCorrect(question.term.id);
+    setScore((s) => ({ correct: s.correct + (correct ? 1 : 0), total: s.total + 1 }));
     setRevealed(false);
-    setRound((r) => r + 1);
+    const nextRound = round + 1;
+    if (nextRound >= shuffled.length) {
+      setShuffled(shuffle(pool));
+      setRound(0);
+    } else {
+      setRound(nextRound);
+    }
   };
 
   const switchDir = (dir) => {
@@ -520,10 +547,10 @@ function QuizMode({ pool }) {
           </div>
           <div className="action-row">
             <button className="btn btn-mark-unsafe" style={{ flex: 1 }} onClick={() => judge(false)}>
-              ✗ Falsch
+              ✗ Noch nicht
             </button>
             <button className="btn btn-mark-safe" style={{ flex: 1 }} onClick={() => judge(true)}>
-              ✓ Richtig
+              ✓ Gewusst {"●".repeat(Math.min((counts[question.term.id] ?? 0) + 1, GRADUATE_AT))}{"○".repeat(Math.max(0, GRADUATE_AT - (counts[question.term.id] ?? 0) - 1))}
             </button>
           </div>
         </>
@@ -589,6 +616,7 @@ export default function App() {
   const [mode, setMode] = useState("flashcards");
   const [activeCat, setActiveCat] = useState("Alle");
   const { known, ready, toggleKnown, resetKnown } = useKnownStore();
+  const { counts, recordCorrect, resetCorrect } = useProgressStore(toggleKnown);
 
   const pool = useMemo(
     () => (activeCat === "Alle" ? TERMS : TERMS.filter((t) => t.cat === activeCat)),
@@ -648,9 +676,9 @@ export default function App() {
 
       <main className="app-main">
         {mode === "flashcards" && (
-          <FlashcardMode pool={pool} known={known} toggleKnown={toggleKnown} />
-        )}
-        {mode === "quiz" && <QuizMode pool={pool} />}
+          <FlashcardMode pool={pool} known={known} counts={counts} recordCorrect={recordCorrect} resetCorrect={resetCorrect} />
+)}
+        {mode === "quiz" && <QuizMode pool={pool} counts={counts} recordCorrect={recordCorrect} resetCorrect={resetCorrect} />}
         {mode === "browse" && <BrowseMode pool={pool} />}
       </main>
 
