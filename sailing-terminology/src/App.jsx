@@ -166,8 +166,10 @@ function pickDistractors(term, pool, count) {
   return chosen;
 }
 
-// Muss zur .flashcard-Transition-Dauer in CSS passen (dort als ${FLIP_MS / 1000}s eingesetzt)
+// FLIP_MS: Flip-Animation-Dauer, nur noch in CSS-Template referenziert
 const FLIP_MS = 450;
+// SLIDE_MS: Karte-wechseln-Animation — muss zu .card-slide-* in CSS passen
+const SLIDE_MS = 380;
 
 /* ---------------------------------------------------------
    Compass Rose — Signatur-Element
@@ -219,8 +221,10 @@ function FlashcardMode({ pool, known, toggleKnown }) {
   const [idx, setIdx] = useState(0);
   const [flipped, setFlipped] = useState(false);
   const [showKnownOnly, setShowKnownOnly] = useState("all"); // all | unknown | known
-  const [transitioning, setTransitioning] = useState(false);
-  const flipBackTimer = useRef(null);
+  const [slideOut, setSlideOut] = useState(false);
+  const [prevIdx, setPrevIdx] = useState(null);
+  const [prevFlipped, setPrevFlipped] = useState(false);
+  const slideTimer = useRef(null);
 
   const filteredOrder = useMemo(() => {
     if (showKnownOnly === "all") return order;
@@ -230,39 +234,43 @@ function FlashcardMode({ pool, known, toggleKnown }) {
   }, [order, showKnownOnly, known]);
 
   useEffect(() => {
-    clearTimeout(flipBackTimer.current);
-    setTransitioning(false);
+    clearTimeout(slideTimer.current);
+    setSlideOut(false);
+    setPrevIdx(null);
     setIdx(0);
     setFlipped(false);
   }, [showKnownOnly, pool]);
 
-  useEffect(() => () => clearTimeout(flipBackTimer.current), []);
+  useEffect(() => () => clearTimeout(slideTimer.current), []);
 
   const current = useMemo(() => {
     const id = filteredOrder[idx % Math.max(filteredOrder.length, 1)];
     return pool.find((t) => t.id === id);
   }, [filteredOrder, idx, pool]);
 
+  const prevCard = useMemo(() => {
+    if (prevIdx === null) return null;
+    const id = filteredOrder[prevIdx % Math.max(filteredOrder.length, 1)];
+    return pool.find((t) => t.id === id);
+  }, [filteredOrder, prevIdx, pool]);
+
   const next = () => {
-    if (transitioning) return;
-    if (flipped) {
-      // Erst zurueckdrehen, DANACH den naechsten Begriff einsetzen - sonst
-      // sieht man die EN-Antwort des naechsten Begriffs schon waehrend der
-      // Dreh-Animation durchscheinen, bevor sie auf DE zurueckklappt
-      setTransitioning(true);
-      setFlipped(false);
-      flipBackTimer.current = setTimeout(() => {
-        setIdx((i) => i + 1);
-        setTransitioning(false);
-      }, FLIP_MS);
-    } else {
-      setIdx((i) => i + 1);
-    }
+    if (slideOut) return;
+    setPrevIdx(idx);
+    setPrevFlipped(flipped);
+    setIdx((i) => i + 1);
+    setFlipped(false);
+    setSlideOut(true);
+    slideTimer.current = setTimeout(() => {
+      setPrevIdx(null);
+      setSlideOut(false);
+    }, SLIDE_MS);
   };
 
   const reshuffle = () => {
-    clearTimeout(flipBackTimer.current);
-    setTransitioning(false);
+    clearTimeout(slideTimer.current);
+    setSlideOut(false);
+    setPrevIdx(null);
     setOrder(shuffle(pool).map((t) => t.id));
     setIdx(0);
     setFlipped(false);
@@ -295,18 +303,36 @@ function FlashcardMode({ pool, known, toggleKnown }) {
 
       <div
         className="card-stage"
-        onClick={() => { if (!transitioning) setFlipped((f) => !f); }}
+        onClick={() => { if (!slideOut) setFlipped((f) => !f); }}
       >
-        <div className={`flashcard ${flipped ? "is-flipped" : ""}`}>
-          <div className="face face-front">
-            <span className="face-label">DE</span>
-            <span className="face-term">{current.de}</span>
-            <span className="tap-hint">tippen zum umdrehen</span>
+        {slideOut && prevCard && (
+          <div className="card-wrapper card-slide-out">
+            <div className={`flashcard ${prevFlipped ? "is-flipped" : ""}`}>
+              <div className="face face-front">
+                <span className="face-label">DE</span>
+                <span className="face-term">{prevCard.de}</span>
+                <span className="tap-hint">tippen zum umdrehen</span>
+              </div>
+              <div className="face face-back">
+                <span className="face-label">EN</span>
+                <span className="face-term">{prevCard.en}</span>
+                {prevCard.note && <span className="face-note">{prevCard.note}</span>}
+              </div>
+            </div>
           </div>
-          <div className="face face-back">
-            <span className="face-label">EN</span>
-            <span className="face-term">{current.en}</span>
-            {current.note && <span className="face-note">{current.note}</span>}
+        )}
+        <div className={`card-wrapper ${slideOut ? "card-slide-in" : ""}`}>
+          <div className={`flashcard ${!slideOut && flipped ? "is-flipped" : ""}`}>
+            <div className="face face-front">
+              <span className="face-label">DE</span>
+              <span className="face-term">{current.de}</span>
+              <span className="tap-hint">tippen zum umdrehen</span>
+            </div>
+            <div className="face face-back">
+              <span className="face-label">EN</span>
+              <span className="face-term">{current.en}</span>
+              {current.note && <span className="face-note">{current.note}</span>}
+            </div>
           </div>
         </div>
       </div>
@@ -315,14 +341,12 @@ function FlashcardMode({ pool, known, toggleKnown }) {
 
       <div className="action-row">
         <button
-          className="btn btn-ghost"
-          onClick={() => {
-            toggleKnown(current.id, !known.has(current.id));
-          }}
+          className={`btn ${known.has(current.id) ? "btn-mark-unsafe" : "btn-mark-safe"}`}
+          onClick={() => toggleKnown(current.id, !known.has(current.id))}
         >
           {known.has(current.id) ? "✓ Als unsicher markieren" : "Als sicher markieren"}
         </button>
-        <button className="btn btn-primary" onClick={next} disabled={transitioning}>
+        <button className="btn btn-primary" onClick={next} disabled={slideOut}>
           Nächste →
         </button>
       </div>
@@ -613,6 +637,7 @@ const CSS = `
   gap: 16px;
   border-bottom: 1px solid rgba(199,160,74,0.35);
   padding-bottom: 16px;
+  min-width: 0;
 }
 .compass-spin { animation: spin 60s linear infinite; }
 @keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
@@ -631,10 +656,14 @@ const CSS = `
   color: var(--paper-dim);
   opacity: 0.85;
 }
+.header-text {
+  flex: 1;
+  min-width: 0;
+}
 .header-progress {
-  margin-left: auto;
+  flex-shrink: 0;
   font-family: 'IBM Plex Mono', monospace;
-  font-size: 13px;
+  font-size: 12px;
   color: var(--brass);
   white-space: nowrap;
 }
@@ -706,12 +735,28 @@ const CSS = `
 .filter-row .pill-active { background: var(--teal); border-color: var(--teal); color: #fff; }
 
 .card-stage {
-  perspective: 1200px;
+  position: relative;
+  overflow: hidden;
   height: 240px;
-  display: flex;
-  justify-content: center;
   cursor: pointer;
 }
+.card-wrapper {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  justify-content: center;
+  perspective: 1200px;
+}
+@keyframes slide-out-left {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-115%); }
+}
+@keyframes slide-in-right {
+  from { transform: translateX(115%); }
+  to   { transform: translateX(0); }
+}
+.card-slide-out { animation: slide-out-left ${SLIDE_MS / 1000}s ease-in forwards; }
+.card-slide-in  { animation: slide-in-right ${SLIDE_MS / 1000}s ease-out forwards; }
 .flashcard {
   position: relative;
   width: min(420px, 100%);
@@ -724,18 +769,17 @@ const CSS = `
   position: absolute;
   inset: 0;
   backface-visibility: hidden;
-  border-radius: 8px;
+  border-radius: 10px;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   gap: 10px;
-  border: 1.5px solid var(--navy);
   padding: 20px;
   text-align: center;
 }
-.face-front { background: #fff; }
-.face-back { background: var(--navy); color: var(--paper); transform: rotateY(180deg); }
+.face-front { background: var(--paper); box-shadow: inset 0 0 0 1px rgba(28,42,46,0.12); }
+.face-back { background: var(--navy); color: var(--paper); transform: rotateY(180deg); box-shadow: inset 0 0 0 1px rgba(199,160,74,0.25); }
 .face-label {
   font-family: 'IBM Plex Mono', monospace;
   font-size: 11px;
@@ -776,6 +820,10 @@ const CSS = `
 .btn-primary:hover { background: #9c3c25; }
 .btn-ghost { background: transparent; border: 1px solid var(--ink); color: var(--ink); }
 .btn-ghost:hover { background: rgba(28,42,46,0.06); }
+.btn-mark-safe { background: var(--teal); color: #fff; border: none; }
+.btn-mark-safe:hover { background: #245c50; }
+.btn-mark-unsafe { background: var(--brass); color: var(--navy-deep); border: none; font-weight: 600; }
+.btn-mark-unsafe:hover { background: #b08a3c; }
 
 .depth-mark {
   align-self: center;
