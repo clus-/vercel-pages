@@ -618,7 +618,8 @@ const CSS = `
   --ink: #1C2A2E;
 }
 
-* { box-sizing: border-box; }
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html, body { background: var(--navy-deep); }
 
 .app-root {
   min-height: 100vh;
