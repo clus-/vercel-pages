@@ -111,6 +111,43 @@ const TERMS = [
   { de: "Sicherheitsleine", en: "Jackline", cat: "Vorfahrt & Sicherheit", exDE: "Hak dich an die Sicherheitsleine ein, bevor du nach vorn gehst.", exEN: "Clip onto the jackline before going forward." },
   { de: "Überlebensinsel", en: "Life raft", cat: "Vorfahrt & Sicherheit", exDE: "Die Überlebensinsel ist die letzte Rettung.", exEN: "The life raft is the last resort." },
   { de: "EPIRB", en: "EPIRB", cat: "Vorfahrt & Sicherheit", exDE: "Der EPIRB wird bei echtem Notfall aktiviert.", exEN: "The EPIRB is activated in a genuine emergency." },
+
+  // Rumpf & Ausrüstung – Ergänzungen aus RYA Day Skipper Handbook
+  { de: "Spiegel", en: "Transom", cat: "Rumpf & Ausrüstung", exDE: "Die Badeleiter hängt am Spiegel.", exEN: "The swim ladder hangs from the transom." },
+  { de: "Bugkorb", en: "Pulpit", cat: "Rumpf & Ausrüstung", exDE: "Halt dich am Bugkorb fest, wenn du nach vorn gehst.", exEN: "Hold the pulpit when moving forward." },
+  { de: "Heckkorb", en: "Pushpit", cat: "Rumpf & Ausrüstung", exDE: "Die Rettungsring-Halterung sitzt am Heckkorb.", exEN: "The lifebuoy bracket is mounted on the pushpit." },
+  { de: "Ankerwinde", en: "Windlass", cat: "Rumpf & Ausrüstung", exDE: "Mit der Ankerwinde holen wir den Anker ein.", exEN: "We haul the anchor with the windlass." },
+  { de: "Leitklampe", en: "Fairlead", cat: "Rumpf & Ausrüstung", exDE: "Die Leitklampe führt die Leine am Rumpf entlang.", exEN: "The fairlead guides the line along the hull." },
+  { de: "Kombüse", en: "Galley", cat: "Rumpf & Ausrüstung", exDE: "In der Kombüse bereiten wir das Essen zu.", exEN: "We prepare meals in the galley." },
+  { de: "Bilge", en: "Bilge", cat: "Rumpf & Ausrüstung", exDE: "Stehendes Wasser in der Bilge muss ausgepumpt werden.", exEN: "Standing water in the bilge must be pumped out." },
+  { de: "Seeventil", en: "Seacock", cat: "Rumpf & Ausrüstung", exDE: "Im Notfall alle Seeventile schließen!", exEN: "In an emergency, close all seacocks!" },
+  { de: "Wasserlinie", en: "Waterline", cat: "Rumpf & Ausrüstung", exDE: "Das Boot liegt bis zur Wasserlinie im Wasser.", exEN: "The boat sits in the water up to the waterline." },
+  { de: "Kartentisch", en: "Chart table", cat: "Rumpf & Ausrüstung", exDE: "Die Route wird am Kartentisch geplant.", exEN: "The route is planned at the chart table." },
+
+  // Segel & Rigg – Ergänzungen
+  { de: "Achterstag", en: "Backstay", cat: "Segel & Rigg", exDE: "Das Achterstag hält den Mast von hinten.", exEN: "The backstay supports the mast from aft." },
+  { de: "Schothorn", en: "Clew", cat: "Segel & Rigg", exDE: "Die Schot ist am Schothorn des Segels befestigt.", exEN: "The sheet is attached to the clew of the sail." },
+  { de: "Unterliek", en: "Foot", cat: "Segel & Rigg", exDE: "Das Unterliek läuft vom Halshorn zum Schothorn.", exEN: "The foot runs from the tack to the clew." },
+  { de: "Vorliek", en: "Luff", cat: "Segel & Rigg", exDE: "Wenn das Vorliek flattert, luf an!", exEN: "If the luff flutters, head up!" },
+  { de: "Salings", en: "Spreaders", cat: "Segel & Rigg", exDE: "Die Salings halten die Wanten in Position.", exEN: "The spreaders hold the shrouds in position." },
+  { de: "Segellatten", en: "Sail battens", cat: "Segel & Rigg", exDE: "Segellatten geben dem Achterliek Form.", exEN: "Sail battens give the leech its shape." },
+  { de: "Gooseneck", en: "Gooseneck", cat: "Segel & Rigg", exDE: "Der Gooseneck verbindet Baum und Mast.", exEN: "The gooseneck connects the boom to the mast." },
+  { de: "Bullenstander", en: "Preventer", cat: "Segel & Rigg", exDE: "Der Bullenstander verhindert eine ungewollte Halse.", exEN: "The preventer stops an accidental gybe." },
+  { de: "Tuchfühler", en: "Telltales", cat: "Segel & Rigg", exDE: "Die Tuchfühler zeigen, ob das Segel optimal steht.", exEN: "The telltales show whether the sail is set correctly." },
+  { de: "Sturmfock", en: "Storm jib", cat: "Segel & Rigg", exDE: "Bei Stärke 8 setzen wir nur noch die Sturmfock.", exEN: "In force 8 we only set the storm jib." },
+
+  // Kurse zum Wind
+  { de: "Abdrift", en: "Leeway", cat: "Kurse zum Wind", exDE: "Strömung und Wind verursachen Abdrift.", exEN: "Current and wind cause leeway." },
+
+  // Navigation
+  { de: "Gezeitenstrom", en: "Tidal stream", cat: "Navigation", exDE: "Der Gezeitenstrom beträgt hier 2 Knoten.", exEN: "The tidal stream here is 2 knots." },
+  { de: "Springtide", en: "Spring tide", cat: "Navigation", exDE: "Bei Springtide ist der Tidenhub am größten.", exEN: "Spring tides have the greatest tidal range." },
+  { de: "Nippgezeiten", en: "Neap tide", cat: "Navigation", exDE: "Bei Nippgezeiten ist der Tidenhub am kleinsten.", exEN: "Neap tides have the smallest tidal range." },
+  { de: "VHF-Funk", en: "VHF radio", cat: "Navigation", exDE: "Alle Notfälle auf Kanal 16 per VHF-Funk melden.", exEN: "Report all emergencies on channel 16 via VHF radio." },
+
+  // Vorfahrt & Sicherheit
+  { de: "Mayday", en: "Mayday", cat: "Vorfahrt & Sicherheit", exDE: "Mayday, Mayday, Mayday – das Boot sinkt!", exEN: "Mayday, Mayday, Mayday – the vessel is sinking!" },
+  { de: "Notfallpack", en: "Grab bag", cat: "Vorfahrt & Sicherheit", exDE: "Im Notfallpack sind VHF, Raketen und Trinkwasser.", exEN: "The grab bag contains VHF, flares and drinking water." },
 ].map((t, i) => ({ ...t, id: `t${i}` }));
 
 const CATEGORIES = [...new Set(TERMS.map((t) => t.cat))];
@@ -395,109 +432,101 @@ function FlashcardMode({ pool, known, toggleKnown }) {
 }
 
 /* ---------------------------------------------------------
-   Quiz Mode
+   Quiz Mode — Selbsteinschätzung (kein Multiple Choice)
 --------------------------------------------------------- */
 function QuizMode({ pool }) {
-  const [direction, setDirection] = useState("de-en"); // de-en | en-de
+  const [direction, setDirection] = useState("de-en");
   const [round, setRound] = useState(0);
   const [score, setScore] = useState({ correct: 0, total: 0 });
-  const [selected, setSelected] = useState(null);
   const [revealed, setRevealed] = useState(false);
+  const [shuffled, setShuffled] = useState(() => shuffle(pool));
+
+  useEffect(() => {
+    setShuffled(shuffle(pool));
+    setRound(0);
+    setRevealed(false);
+  }, [pool]);
 
   const question = useMemo(() => {
-    if (pool.length < 4) return null;
-    const term = shuffle(pool)[round % pool.length];
-    const wrongTerms = pickDistractors(term, pool, 3);
+    if (!pool.length) return null;
+    const term = shuffled[round % Math.max(shuffled.length, 1)];
+    if (!term) return null;
     const isDeEn = direction === "de-en";
-    const prompt = isDeEn ? term.de : term.en;
-    const correctAnswer = isDeEn ? term.en : term.de;
-    const options = shuffle([
-      correctAnswer,
-      ...wrongTerms.map((t) => (isDeEn ? t.en : t.de)),
-    ]);
-    return { term, prompt, correctAnswer, options, isDeEn };
-  }, [pool, round, direction]);
+    return {
+      term,
+      prompt:   isDeEn ? term.de : term.en,
+      answer:   isDeEn ? term.en : term.de,
+      promptEx: isDeEn ? term.exDE : term.exEN,
+      answerEx: isDeEn ? term.exEN : term.exDE,
+      isDeEn,
+    };
+  }, [shuffled, round, direction, pool]);
 
-  const choose = (option) => {
-    if (revealed) return;
-    setSelected(option);
-    setRevealed(true);
+  const judge = (correct) => {
     setScore((s) => ({
-      correct: s.correct + (option === question.correctAnswer ? 1 : 0),
+      correct: s.correct + (correct ? 1 : 0),
       total: s.total + 1,
     }));
-  };
-
-  const nextRound = () => {
-    setSelected(null);
     setRevealed(false);
     setRound((r) => r + 1);
   };
 
-  if (!question) {
-    return (
-      <div className="empty-state">
-        <p>Mindestens 4 Begriffe in der Auswahl nötig für den Quiz-Modus.</p>
-      </div>
-    );
-  }
+  const switchDir = (dir) => {
+    setDirection(dir);
+    setRevealed(false);
+    setRound(0);
+    setShuffled(shuffle(pool));
+    setScore({ correct: 0, total: 0 });
+  };
+
+  if (!question) return (
+    <div className="empty-state"><p>Keine Begriffe in dieser Auswahl.</p></div>
+  );
 
   return (
     <div className="mode-wrap">
       <div className="filter-row">
-        <button
-          className={`pill ${direction === "de-en" ? "pill-active" : ""}`}
-          onClick={() => {
-            setDirection("de-en");
-            nextRound();
-          }}
-        >
-          DE → EN
-        </button>
-        <button
-          className={`pill ${direction === "en-de" ? "pill-active" : ""}`}
-          onClick={() => {
-            setDirection("en-de");
-            nextRound();
-          }}
-        >
-          EN → DE
-        </button>
+        <button className={`pill ${direction === "de-en" ? "pill-active" : ""}`}
+          onClick={() => switchDir("de-en")}>DE → EN</button>
+        <button className={`pill ${direction === "en-de" ? "pill-active" : ""}`}
+          onClick={() => switchDir("en-de")}>EN → DE</button>
         <span className="score-tag" style={{ marginLeft: "auto" }}>
           {score.correct} / {score.total} richtig
         </span>
       </div>
 
+      {/* Prompt */}
       <div className="quiz-prompt">
         <span className="face-label">{question.isDeEn ? "DE" : "EN"}</span>
         <span className="quiz-term">{question.prompt}</span>
-        <span className="cat-tag" style={{ marginTop: 8 }}>
-          {question.term.cat}
-        </span>
+        {question.promptEx && <span className="face-note" style={{ marginTop: 4 }}>{question.promptEx}</span>}
+        <span className="cat-tag" style={{ marginTop: 8 }}>{question.term.cat}</span>
       </div>
 
-      <div className="options-grid">
-        {question.options.map((opt) => {
-          let cls = "option-btn";
-          if (revealed) {
-            if (opt === question.correctAnswer) cls += " option-correct";
-            else if (opt === selected) cls += " option-wrong";
-          }
-          return (
-            <button key={opt} className={cls} onClick={() => choose(opt)}>
-              {opt}
-            </button>
-          );
-        })}
-      </div>
-
-      {revealed && (
+      {!revealed ? (
         <div className="action-row">
-          {question.term.note && <div className="quiz-note">{question.term.note}</div>}
-          <button className="btn btn-primary" onClick={nextRound}>
-            Weiter →
+          <button className="btn btn-primary" style={{ flex: 1 }} onClick={() => setRevealed(true)}>
+            Antwort zeigen →
           </button>
         </div>
+      ) : (
+        <>
+          {/* Answer reveal */}
+          <div className="quiz-answer">
+            <span className="face-label">{question.isDeEn ? "EN" : "DE"}</span>
+            <span className="quiz-term">{question.answer}</span>
+            {question.answerEx && <span className="face-note" style={{ marginTop: 4 }}>{question.answerEx}</span>}
+            {question.term.note && <span className="quiz-note">{question.term.note}</span>}
+          </div>
+          <div className="action-row">
+            <button className="btn btn-mark-unsafe" style={{ flex: 1 }} onClick={() => judge(false)}>
+              ✗ Falsch
+            </button>
+            <button className="btn btn-mark-safe" style={{ flex: 1 }} onClick={() => judge(true)}>
+              ✓ Richtig
+            </button>
+          </div>
+        </>
       )}
     </div>
   );
@@ -875,30 +904,26 @@ html, body { background: var(--navy-deep); }
   flex-direction: column;
   align-items: center;
   gap: 6px;
-  padding: 28px 10px;
+  padding: 20px 10px;
+  border-radius: 10px;
+  background: var(--paper);
+  box-shadow: inset 0 0 0 1px rgba(28,42,46,0.12);
 }
-.quiz-term { font-family: 'Spectral', serif; font-size: 30px; font-weight: 600; }
+.quiz-answer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  padding: 16px 10px;
+  border-radius: 10px;
+  background: var(--navy);
+  color: var(--paper);
+}
+.quiz-answer .face-label { color: var(--brass); }
+.quiz-answer .face-note { color: var(--paper-dim); opacity: 0.85; }
+.quiz-term { font-family: 'Spectral', serif; font-size: 26px; font-weight: 600; }
 .score-tag { font-family: 'IBM Plex Mono', monospace; font-size: 12.5px; color: var(--teal); }
-
-.options-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 10px;
-}
-@media (max-width: 480px) { .options-grid { grid-template-columns: 1fr; } }
-.option-btn {
-  padding: 14px 12px;
-  border-radius: 6px;
-  border: 1.5px solid rgba(28,42,46,0.25);
-  background: #fff;
-  font-size: 14.5px;
-  text-align: left;
-  cursor: pointer;
-}
-.option-btn:hover { border-color: var(--teal); }
-.option-correct { background: #e3efe9; border-color: var(--teal); font-weight: 600; }
-.option-wrong { background: #f6e3dd; border-color: var(--rust); }
-.quiz-note { font-size: 12.5px; color: #6b6354; text-align: center; max-width: 360px; }
+.quiz-note { font-size: 12px; color: var(--paper-dim); opacity: 0.7; text-align: center; max-width: 360px; font-style: italic; margin-top: 2px; }
 
 .search-input {
   width: 100%;
