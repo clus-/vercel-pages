@@ -242,7 +242,7 @@ function FlashcardMode({ pool, known, toggleKnown }) {
   const [flipped, setFlipped] = useState(false);
   const [showKnownOnly, setShowKnownOnly] = useState("all"); // all | unknown | known
   const [slideOut, setSlideOut] = useState(false);
-  const [prevIdx, setPrevIdx] = useState(null);
+  const [prevCardData, setPrevCardData] = useState(null);
   const [prevFlipped, setPrevFlipped] = useState(false);
   const slideTimer = useRef(null);
 
@@ -256,7 +256,7 @@ function FlashcardMode({ pool, known, toggleKnown }) {
   useEffect(() => {
     clearTimeout(slideTimer.current);
     setSlideOut(false);
-    setPrevIdx(null);
+    setPrevCardData(null);
     setIdx(0);
     setFlipped(false);
   }, [showKnownOnly, pool]);
@@ -268,29 +268,41 @@ function FlashcardMode({ pool, known, toggleKnown }) {
     return pool.find((t) => t.id === id);
   }, [filteredOrder, idx, pool]);
 
-  const prevCard = useMemo(() => {
-    if (prevIdx === null) return null;
-    const id = filteredOrder[prevIdx % Math.max(filteredOrder.length, 1)];
-    return pool.find((t) => t.id === id);
-  }, [filteredOrder, prevIdx, pool]);
-
-  const next = () => {
+  const startSlide = (outgoingCard, outgoingFlipped, advanceFn) => {
     if (slideOut) return;
-    setPrevIdx(idx);
-    setPrevFlipped(flipped);
-    setIdx((i) => i + 1);
+    setPrevCardData(outgoingCard);
+    setPrevFlipped(outgoingFlipped);
+    advanceFn();
     setFlipped(false);
     setSlideOut(true);
     slideTimer.current = setTimeout(() => {
-      setPrevIdx(null);
+      setPrevCardData(null);
       setSlideOut(false);
     }, SLIDE_MS);
+  };
+
+  const next = () => startSlide(current, flipped, () => setIdx((i) => i + 1));
+
+  const handleToggleKnown = () => {
+    if (!current) return;
+    const isKnown = known.has(current.id);
+    // Will this card disappear from the filtered view after toggling?
+    const willLeave =
+      (showKnownOnly === "unknown" && !isKnown) ||
+      (showKnownOnly === "known"   &&  isKnown);
+    if (willLeave) {
+      // Capture the outgoing card before filteredOrder changes, then slide
+      startSlide(current, flipped, () => toggleKnown(current.id, !isKnown));
+    } else {
+      toggleKnown(current.id, !isKnown);
+      setFlipped(false);
+    }
   };
 
   const reshuffle = () => {
     clearTimeout(slideTimer.current);
     setSlideOut(false);
-    setPrevIdx(null);
+    setPrevCardData(null);
     setOrder(shuffle(pool).map((t) => t.id));
     setIdx(0);
     setFlipped(false);
@@ -325,20 +337,20 @@ function FlashcardMode({ pool, known, toggleKnown }) {
         className="card-stage"
         onClick={() => { if (!slideOut) setFlipped((f) => !f); }}
       >
-        {slideOut && prevCard && (
+        {slideOut && prevCardData && (
           <div className="card-wrapper card-slide-out">
             <div className={`flashcard ${prevFlipped ? "is-flipped" : ""}`}>
               <div className="face face-front">
                 <span className="face-label">DE</span>
-                <span className="face-term">{prevCard.de}</span>
-                {prevCard.exDE && <span className="face-note">{prevCard.exDE}</span>}
+                <span className="face-term">{prevCardData.de}</span>
+                {prevCardData.exDE && <span className="face-note">{prevCardData.exDE}</span>}
                 <span className="tap-hint">tippen zum umdrehen</span>
               </div>
               <div className="face face-back">
                 <span className="face-label">EN</span>
-                <span className="face-term">{prevCard.en}</span>
-                {prevCard.exEN && <span className="face-note">{prevCard.exEN}</span>}
-                {prevCard.note && <span className="face-note face-note-meta">{prevCard.note}</span>}
+                <span className="face-term">{prevCardData.en}</span>
+                {prevCardData.exEN && <span className="face-note">{prevCardData.exEN}</span>}
+                {prevCardData.note && <span className="face-note face-note-meta">{prevCardData.note}</span>}
               </div>
             </div>
           </div>
@@ -366,7 +378,7 @@ function FlashcardMode({ pool, known, toggleKnown }) {
       <div className="action-row">
         <button
           className={`btn ${known.has(current.id) ? "btn-mark-unsafe" : "btn-mark-safe"}`}
-          onClick={() => toggleKnown(current.id, !known.has(current.id))}
+          onClick={handleToggleKnown}
         >
           {known.has(current.id) ? "✓ Als unsicher markieren" : "Als sicher markieren"}
         </button>
@@ -648,10 +660,10 @@ html, body { background: var(--navy-deep); }
   background: radial-gradient(circle at 20% 0%, #123349 0%, var(--navy-deep) 60%);
   color: var(--paper);
   font-family: 'IBM Plex Sans', sans-serif;
-  padding: 24px 16px 40px;
+  padding: 16px 16px 24px;
   display: flex;
   flex-direction: column;
-  gap: 18px;
+  gap: 10px;
 }
 
 .app-header {
@@ -659,7 +671,7 @@ html, body { background: var(--navy-deep); }
   align-items: center;
   gap: 16px;
   border-bottom: 1px solid rgba(199,160,74,0.35);
-  padding-bottom: 16px;
+  padding-bottom: 10px;
   min-width: 0;
 }
 .compass-spin { animation: spin 60s linear infinite; }
@@ -669,7 +681,7 @@ html, body { background: var(--navy-deep); }
 .header-text h1 {
   font-family: 'Spectral', serif;
   font-weight: 700;
-  font-size: 28px;
+  font-size: 22px;
   margin: 0;
   letter-spacing: 0.3px;
 }
@@ -697,7 +709,7 @@ html, body { background: var(--navy-deep); }
 }
 .mode-btn {
   flex: 1;
-  padding: 10px 14px;
+  padding: 7px 14px;
   background: rgba(255,255,255,0.04);
   border: 1px solid rgba(199,160,74,0.3);
   color: var(--paper-dim);
@@ -721,7 +733,7 @@ html, body { background: var(--navy-deep); }
   flex-wrap: wrap;
 }
 .pill {
-  padding: 6px 12px;
+  padding: 4px 10px;
   border-radius: 999px;
   border: 1px solid rgba(239,231,214,0.25);
   background: transparent;
@@ -742,7 +754,7 @@ html, body { background: var(--navy-deep); }
   background: var(--paper);
   color: var(--ink);
   border-radius: 10px;
-  padding: 24px;
+  padding: 16px;
   min-height: 420px;
   box-shadow: 0 8px 30px rgba(0,0,0,0.35);
   background-image:
@@ -751,7 +763,7 @@ html, body { background: var(--navy-deep); }
   background-size: 24px 24px;
 }
 
-.mode-wrap { display: flex; flex-direction: column; gap: 18px; }
+.mode-wrap { display: flex; flex-direction: column; gap: 12px; }
 
 .filter-row { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
 .filter-row .pill { border-color: rgba(28,42,46,0.25); color: var(--ink); }
@@ -760,7 +772,7 @@ html, body { background: var(--navy-deep); }
 .card-stage {
   position: relative;
   overflow: hidden;
-  height: 240px;
+  height: 200px;
   cursor: pointer;
 }
 .card-wrapper {
@@ -813,7 +825,7 @@ html, body { background: var(--navy-deep); }
 .face-back .face-label { color: var(--brass); }
 .face-term {
   font-family: 'Spectral', serif;
-  font-size: 28px;
+  font-size: 24px;
   font-weight: 600;
   line-height: 1.25;
 }

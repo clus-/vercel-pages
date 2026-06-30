@@ -1,0 +1,13 @@
+{
+  "name": "Seemannssprache",
+  "short_name": "Seemannssprache",
+  "description": "Sailing terminology DE/EN — flashcards, quiz, lookup",
+  "start_url": "/sailing-terminology/",
+  "scope": "/sailing-terminology/",
+  "display": "standalone",
+  "background_color": "#081A26",
+  "theme_color": "#081A26",
+  "icons": [
+    { "src": "/sailing-terminology/icons/icon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any maskable" }
+  ]
+}
